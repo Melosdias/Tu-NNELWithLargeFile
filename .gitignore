@@ -1,0 +1,13 @@
+"Le jeu/TU-NNEL/Library"
+"Le jeu/TU-NNEL/obj"
+"Le jeu\TU-NNEL\Temp\bin"
+
+*.csproj
+*.csproj.user
+*.meta
+*.jpg.meta
+*.png.meta
+*.prefab.meta
+*.blend.meta
+*.fbx.meta
+*.chm.meta
