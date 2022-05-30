@@ -44,7 +44,7 @@ public class NewGeneration : MonoBehaviourPun
             Bloc.layer = 7;
             PhotonView view = Bloc.AddComponent<PhotonView>() as PhotonView; //Normalement ça ajoute un photonView à ce bloc (et c'est cool)
 
-            Bloc.tag = "Intact";
+            Bloc.tag = "free";
             map.Add((Bloc, a));
         }
     }

@@ -141,8 +141,9 @@ public class Buildings : MonoBehaviourPun
             Ressources.pierre.suppRessource(5);
             Stone.update = false;
             position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
-            GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.identity);
+            GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.Euler(new Vector3(Batiment.transform.eulerAngles.x, Batiment.transform.eulerAngles.y+90, Batiment.transform.eulerAngles.z+90)));
             view = PhotonView.Get(go);
             Debug.Log($"view : {view.ViewID}");
             ChangeState.builded = true;
@@ -175,6 +176,7 @@ public class Buildings : MonoBehaviourPun
             Ressources.pierre.suppRessource(10);
             Stone.update = false;
             position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position,Quaternion.identity);
             view = PhotonView.Get(go);
@@ -204,6 +206,7 @@ public class Buildings : MonoBehaviourPun
             Ressources.pierre.suppRessource(5);
             Stone.update = false;
             position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
             view = PhotonView.Get(go);
@@ -235,6 +238,7 @@ public class Buildings : MonoBehaviourPun
             Ressources.metal.suppRessource(5);
             Metal.update = false;
             position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
             view = PhotonView.Get(go);
@@ -272,6 +276,7 @@ public class Buildings : MonoBehaviourPun
             Stone.update = false;
             position = new Vector3(ChangeState.goCoord.x, 1.1f,ChangeState.goCoord.z);
             Batiment.layer = 9;
+            ChangeState.go.tag = "notFree";
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.identity);
             view = PhotonView.Get(go);
             Debug.Log($"viewId : {view.ViewID}");
@@ -305,6 +310,7 @@ public class Buildings : MonoBehaviourPun
             Ressources.metal.suppRessource(10);
             Metal.update = false;
             position = new Vector3(ChangeState.goCoord.x, 1.1f,ChangeState.goCoord.z);
+            ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
             view = PhotonView.Get(go);

@@ -8,6 +8,8 @@ TagManager:
   - Bullet
   - Intact
   - reinforced
+  - free
+  - notFree
   layers:
   - Default
   - TransparentFX

@@ -243,35 +243,58 @@ public class ChangeState : MonoBehaviourPun
                     {
                         Debug.Log("Not a wall");
                     }
-                    if (hit.transform.gameObject.name == "maisonuntied(Clone)")
+                    if (hit.transform.gameObject.name == "maisonuntied(Clone)") //On a cliqué sur une maison
                     {
+
                         houseMenu.SetActive(true);
                         go = hit.transform.gameObject;
                         
                     }
                     if(hit.transform.parent != null &&  (hit.transform.parent.name == "CasernePrefab(Clone)")
-                    || hit.transform.gameObject.name == "CasernePrefab(Clone)")
+                    || hit.transform.gameObject.name == "CasernePrefab(Clone)") //On a cliqué sur la caserne
                     {
                         barrackMenu.SetActive(true);
                         go = hit.transform.gameObject;
                     }
-                    if (hit.transform.parent != null && (hit.transform.parent.name == "Base(Clone)") || hit.transform.gameObject.name == "Base(Clone)")
+                    if (hit.transform.parent != null && (hit.transform.parent.name == "Base(Clone)") || hit.transform.gameObject.name == "Base(Clone)") //On a cliqué sur la base
                     {
                         baseMenu.SetActive(true);
                         go = hit.transform.gameObject;
                     }
                     
                 }
-                else 
+                else //On a cliqué sur le sol
                 {
                     if (!(Physics.Raycast(ray, out RaycastHit raycastHit1, float.MaxValue, layerWall)) 
                     && Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerGround))
                     {
-                        Debug.Log("if");
-                        transform.position = raycastHit.point;
-                        buildMenu.SetActive(true);
-                        buildMenu.transform.position = new Vector3(raycastHit.point.x, 3, raycastHit.point.z);
-                        goCoord = raycastHit.point;
+                        Debug.Log("if sol");
+                        if(raycastHit.transform.tag == "free")
+                        {
+                            transform.position = raycastHit.point;
+                            buildMenu.SetActive(true);
+                            go = raycastHit.transform.gameObject;
+                            
+                            buildMenu.transform.position = new Vector3(raycastHit.point.x, 3, raycastHit.point.z);
+                            goCoord = raycastHit.point;
+                            //Je veux sauvegarder le sol sur lequel on a cliqué
+                            if(go.transform.position.x != goCoord.x || go.transform.position.z != goCoord.z)
+                            {
+                                Collider[] collider = Physics.OverlapSphere(go.transform.position, 3, layerGround);
+                                foreach(Collider colli in collider)
+                                {
+                                    if (colli.transform.position.x == goCoord.x && colli.transform.position.z == goCoord.z) 
+                                    {
+                                        go = colli.transform.gameObject;
+                                        break;
+                                    }
+                                }
+                            }
+                            Debug.Log($"Go.name : {go.name}");
+                            Debug.Log($"go.coord {go.transform.position.x},{go.transform.position.z}");
+                            Debug.Log($"goCoord : {goCoord.x},{goCoord.z}");
+                        }
+                        else rightClick = false;
                     }
                     else 
                     {
