@@ -1,5 +1,4 @@
 Assets[[:space:]]blender/* filter=lfs diff=lfs merge=lfs -text
-C:/Users/Emmeline/Documents/Cours/Projet[[:space:]]S2/TestLFS/Tu-NNELWithLargeFile/Le[[:space:]]jeu/TU-NNEL/Assets/Meshes/* filter=lfs diff=lfs merge=lfs -text
 Le[[:space:]]jeu/TU-NNEL/Assets/Meshes/* filter=lfs diff=lfs merge=lfs -text
 Le[[:space:]]jeu/TU-NNEL/Library/ArtifactDB filter=lfs diff=lfs merge=lfs -text
 Le[[:space:]]jeu/TU-NNEL/Library/Artifacts/df/df16d45abac5d887c92f410fbd9d33f2 filter=lfs diff=lfs merge=lfs -text

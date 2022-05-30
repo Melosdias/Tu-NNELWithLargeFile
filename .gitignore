@@ -1,6 +1,6 @@
-"Le jeu/TU-NNEL/Library"
-"Le jeu/TU-NNEL/obj"
-"Le jeu\TU-NNEL\Temp\bin"
+Le jeu/TU-NNEL/Library
+Le jeu/TU-NNEL/obj
+Le jeu/TU-NNEL/Temp/bin
 
 *.csproj
 *.csproj.user
