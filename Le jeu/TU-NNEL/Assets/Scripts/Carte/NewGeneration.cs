@@ -13,6 +13,7 @@ public class NewGeneration : MonoBehaviourPun
 
     
     public static List<(int,int, int)> coordBase = new List<(int, int, int)>();
+    public static List<(int,(int,int, int))> coordBaseVithId = new List<(int, (int,int, int))>(); //On a vu plus opti, mais changer coordBase impliquait trop de changement pour un truc dont je suis pas sûre >.>
     System.Random rnd = new System.Random(seed); 
     #endregion 
     public int size = 100;
@@ -151,7 +152,7 @@ public class NewGeneration : MonoBehaviourPun
                     //if(!photonView.IsMine) continue;
                     PhotonNetwork.Instantiate(Base.name, new Vector3(3*y, 1.1f,3*x), Quaternion.identity);
                     coordBase.Add((3*y, 1, 3*x));              
-
+                    coordBaseVithId.Add((coordBase.Count-1, coordBase[coordBase.Count-1]));
                 }
                 if (genM[y,x].isRock && !genM[y,x].isSpawn)
                 {
@@ -212,7 +213,6 @@ public class NewGeneration : MonoBehaviourPun
                 Debug.Log($"Coordonées de la base : x : {coord.Item1}, y : {coord.Item2}, z: {coord.Item3}");
             }
             //Essai de fog of war
-            
         }
     }
 }

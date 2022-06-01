@@ -11,6 +11,7 @@ public class ControlleurDeCam : MonoBehaviour
     public static int south;
     public static int east;
     public static int west;
+    public static int idPlayer;
     //public static 
     #endregion
 
@@ -35,7 +36,7 @@ public class ControlleurDeCam : MonoBehaviour
         
         if(!init && NewGeneration.coordBase.Count > CreateAndJoinRooms.player -1 && CreateAndJoinRooms.player -1 >= 0)
         {
-            int idPlayer = CreateAndJoinRooms.player - 1;
+            idPlayer = CreateAndJoinRooms.player - 1;
             Debug.Log($"CreateAndJoinRooms.player -1 ; {CreateAndJoinRooms.player -1}");
             Debug.Log($"Wait.CoordCam.Count : {Wait.CoordCam.Count}");
             Debug.Log($"NewGeneration.coordBase.Count : {NewGeneration.coordBase.Count}");
