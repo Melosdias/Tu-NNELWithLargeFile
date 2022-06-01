@@ -338,15 +338,15 @@ public class ChangeState : MonoBehaviourPun
     void destroyWall()
     {
         Debug.Log("destroyWall");
-        PhotonView goView = PhotonView.Get(go);
-        goView.RPC("delete", RpcTarget.All);
-        Debug.Log($"go.activeSelf : {go.activeSelf}");
-        changing = false;
-        UnitSelection.Instance.mineurs.Enqueue(larbin);
-        if(ControlleurDeCam.north < goView.transform.position.z) ControlleurDeCam.north = (int)goView.transform.position.z;
-        else if (ControlleurDeCam.south > goView.transform.position.z) ControlleurDeCam.south = (int)goView.transform.position.z;
-        if(ControlleurDeCam.west < goView.transform.position.x) ControlleurDeCam.west = (int)goView.transform.position.x;
-        else if(ControlleurDeCam.east > goView.transform.position.x) ControlleurDeCam.east = (int)goView.transform.position.x;
+        if(go.activeInHierarchy)
+        {
+            PhotonView goView = PhotonView.Get(go);
+            goView.RPC("delete", RpcTarget.All);
+            Debug.Log($"go.activeSelf : {go.activeSelf}");
+            changing = false;
+            UnitSelection.Instance.mineurs.Enqueue(larbin);
+        }
+        
     }
 
 

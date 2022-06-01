@@ -6,11 +6,6 @@ public class ControlleurDeCam : MonoBehaviour
 {
     #region Emmeline's part
     public static bool init;
-    //Coord area
-    public static int north;
-    public static int south;
-    public static int east;
-    public static int west;
     public static int idPlayer;
     //public static 
     #endregion
@@ -44,15 +39,7 @@ public class ControlleurDeCam : MonoBehaviour
             position.y = 15;
             position.z =  NewGeneration.coordBase[idPlayer].Item3 -5;
             init = true;
-            //Calcul de l'aire de base
-            north = NewGeneration.coordBase[idPlayer].Item3 +3;
-            Debug.Log($"North : {north}");
-            south = NewGeneration.coordBase[idPlayer].Item3 -3;
-            Debug.Log($"South : {south}");
-            east = NewGeneration.coordBase[idPlayer].Item1 +3;
-            Debug.Log($"East : {east}");
-            west = NewGeneration.coordBase[idPlayer].Item1 -3;
-            Debug.Log($"West : {west}");
+            
         }
 
         //Determiner l'aire de mouvement de la caméra
@@ -89,20 +76,14 @@ public class ControlleurDeCam : MonoBehaviour
 
         position.y -= zoom * vitesseDuScroll * Time.deltaTime;
 
-        //Si On veut bloquer la cam, on garde ces lignes là
-        if(east<west) position.x = Mathf.Clamp(position.x, east, west);
-        else position.x = Mathf.Clamp(position.x,  west, east); //Imagine avoir max < min.. Imagine >.>
-        if (south < north ) position.z = Mathf.Clamp(position.z, south, north);
-        else position.z = Mathf.Clamp(position.z, north, south);
-        position.y = Mathf.Clamp(position.y, 3.2f, limite);
         
-        //Sinon on décommente celle là ;)
-        /*position.x = Mathf.Clamp(position.x, 0f, s);
+        
+        position.x = Mathf.Clamp(position.x, 0f, s);
 
         position.z = Mathf.Clamp(position.z, 0f, s);
 
         position.y = Mathf.Clamp(position.y, 3.2f, limite);  //mathf.clamp sert a fixer une limite a la position x, y ou z.
-        */
+        
         transform.position = position;
     }
 }
