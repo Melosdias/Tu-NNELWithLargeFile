@@ -211,6 +211,8 @@ public class NewGeneration : MonoBehaviourPun
             {
                 Debug.Log($"Coordonées de la base : x : {coord.Item1}, y : {coord.Item2}, z: {coord.Item3}");
             }
+            //Essai de fog of war
+            
         }
     }
 }

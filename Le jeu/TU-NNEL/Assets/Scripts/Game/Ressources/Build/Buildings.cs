@@ -12,6 +12,7 @@ public class Buildings : MonoBehaviourPun
     private PhotonView view;
     private Vector3 position;
     private Quaternion quaternion;
+    private float fieldOfView;
     
     public float waitTime = 10;
     #region Reinforcement

@@ -52,6 +52,7 @@ public class ChangeState : MonoBehaviourPun
             RaycastHit hit;
 
             Debug.Log("Left click");
+            
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, wall))
             {
                 Debug.Log($"hit.transform.parent {hit.transform.parent}");
@@ -177,6 +178,7 @@ public class ChangeState : MonoBehaviourPun
                                     {
                                         changing = true;
                                         Debug.Log("wallhit");
+                                        
                                         Invoke("transition", 1);
                                     }
                                     else
@@ -341,7 +343,10 @@ public class ChangeState : MonoBehaviourPun
         Debug.Log($"go.activeSelf : {go.activeSelf}");
         changing = false;
         UnitSelection.Instance.mineurs.Enqueue(larbin);
-
+        if(ControlleurDeCam.north < goView.transform.position.z) ControlleurDeCam.north = (int)goView.transform.position.z;
+        else if (ControlleurDeCam.south > goView.transform.position.z) ControlleurDeCam.south = (int)goView.transform.position.z;
+        if(ControlleurDeCam.west < goView.transform.position.x) ControlleurDeCam.west = (int)goView.transform.position.x;
+        else if(ControlleurDeCam.east > goView.transform.position.x) ControlleurDeCam.east = (int)goView.transform.position.x;
     }
 
 
