@@ -1,0 +1,1 @@
+Les changements nécessaires ont été apportés aux .blend. Par conséquent, il faut réimporter tout les modèles sauf ceux de la mine et du cube (les trucs d'explorations)
