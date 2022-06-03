@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 
 public class ChangeState : MonoBehaviourPun
@@ -17,6 +18,8 @@ public class ChangeState : MonoBehaviourPun
     [SerializeField] private GameObject baseMenu;
     [SerializeField] private GameObject barrackMenu;
     [SerializeField] private GameObject wallMenu;
+    [SerializeField] private GameObject mineMetauxMenu;
+    [SerializeField] private GameObject labMenu;
     #endregion
     public Material intact;
     public Material intermediate;
@@ -31,6 +34,7 @@ public class ChangeState : MonoBehaviourPun
 
     private GameObject larbin;
     private bool buildWall;
+    public Button mine;
 
 
 
@@ -40,9 +44,13 @@ public class ChangeState : MonoBehaviourPun
         houseMenu.SetActive(false);
         baseMenu.SetActive(false);
         barrackMenu.SetActive(false);
+        mineMetauxMenu.SetActive(false);
+        labMenu.SetActive(false);
         rightClick = false;
         minerai = LayerMask.GetMask("minerai");
         wall = LayerMask.GetMask("Wall");
+        mine.enabled = false;
+        
     }
     void Update()
     {
@@ -70,39 +78,6 @@ public class ChangeState : MonoBehaviourPun
                     {
                         Debug.Log("pas fait");
                     }
-                    if (hit.transform.name == "pierre") //Si on mine de la pierre
-                    {
-                        if (hit.transform.gameObject.tag == "Intact")
-                        {
-                            hit.transform.gameObject.tag = "Intermediate";
-                            //Debug.Log($"Tag {Minerais.tag}");
-                            Ressources.mine(Ressources.pierre, larbin, hit);
-
-                        }
-                        else
-                        {
-                            Ressources.mine(Ressources.pierre, larbin, hit);
-                        }
-                        //Debug.Log($"Destroyed");
-                        PhotonNetwork.Destroy(hit.transform.gameObject);
-                    }
-                    if (hit.transform.name == "metal") //Si on mine du métal
-                    {
-                        if (hit.transform.gameObject.tag == "Intact")
-                        {
-                            hit.transform.gameObject.tag = "Intermediate";
-                            //Debug.Log($"Tag {Minerais.tag}");
-                            Ressources.mine(Ressources.metal, larbin, hit);
-                            hit.transform.gameObject.GetComponent<MeshRenderer>().material = intermediate;
-                        }
-                        else
-                        {
-                            Ressources.mine(Ressources.metal, larbin, hit);
-                            //Debug.Log($"Destroyed");
-                            PhotonNetwork.Destroy(hit.transform.gameObject);
-                        }
-                    }
-                    if (hit.transform.name == "coeurEnergie") //Si on mine un coeur d'energie
                     {
                         if (hit.transform.gameObject.tag == "Intact")
                         {
@@ -204,6 +179,8 @@ public class ChangeState : MonoBehaviourPun
             baseMenu.SetActive(false);
             barrackMenu.SetActive(false);
             wallMenu.SetActive(false);
+            mineMetauxMenu.SetActive(false);
+            labMenu.SetActive(false);
             builded = false;
         }
         if(Input.GetMouseButtonDown(1) )
@@ -219,6 +196,8 @@ public class ChangeState : MonoBehaviourPun
                 barrackMenu.SetActive(false);
                 baseMenu.SetActive(false);
                 wallMenu.SetActive(false);
+                labMenu.SetActive(false);
+                mineMetauxMenu.SetActive(false);
             }
             else
             {
@@ -228,6 +207,7 @@ public class ChangeState : MonoBehaviourPun
                 Ray ray = theCamera.ScreenPointToRay(mousePos);
                 RaycastHit hit;
                 rightClick = true;
+                //Click droit sur un mur
                 if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerWall))
                 {
                     Debug.Log($"On a cliqué sur : {hit.transform.gameObject.name}");
@@ -263,38 +243,196 @@ public class ChangeState : MonoBehaviourPun
                         baseMenu.SetActive(true);
                         go = hit.transform.gameObject;
                     }
-                    
+                    if(hit.transform.parent != null &&  (hit.transform.parent.name == "mineMetauxPrefab(Clone)")
+                    || hit.transform.gameObject.name == "mineMetauxPrefab(Clone)") 
+                    {
+                        mineMetauxMenu.SetActive(true);
+                        go = hit.transform.gameObject;
+                    }
+                    if(hit.transform.parent != null &&  (hit.transform.parent.name == "CentreDeRecherchePrefab(Clone)")
+                    || hit.transform.gameObject.name == "CentreDeRecherchePrefab(Clone)") 
+                    {
+                        labMenu.SetActive(true);
+                        go = hit.transform.gameObject;
+                    }
                 }
                 else //On a cliqué sur le sol
                 {
+                    mine.enabled = false;
                     if (!(Physics.Raycast(ray, out RaycastHit raycastHit1, float.MaxValue, layerWall)) 
                     && Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerGround))
                     {
+                        rightClick = true;
                         Debug.Log("if sol");
                         if(raycastHit.transform.tag == "free")
                         {
                             transform.position = raycastHit.point;
                             buildMenu.SetActive(true);
                             go = raycastHit.transform.gameObject;
-                            
+                            Debug.Log($"go.coord {((int)go.transform.position.x)},{(int)go.transform.position.z}");
                             buildMenu.transform.position = new Vector3(raycastHit.point.x, 3, raycastHit.point.z);
                             goCoord = raycastHit.point;
                             //Je veux sauvegarder le sol sur lequel on a cliqué
                             if(go.transform.position.x != goCoord.x || go.transform.position.z != goCoord.z)
                             {
+                                Debug.Log("go.transform.position.x != goCoord.x || go.transform.position.z != goCoord.z");
                                 Collider[] collider = Physics.OverlapSphere(go.transform.position, 3, layerGround);
+                                Debug.Log($"Collider.Count {collider.Length}");
                                 foreach(Collider colli in collider)
                                 {
-                                    if (colli.transform.position.x == goCoord.x && colli.transform.position.z == goCoord.z) 
+                                    Debug.Log($"colli : {colli.transform.position.x}, {colli.transform.position.z}");
+                                    if((int)goCoord.x % 3 == 0)
                                     {
-                                        go = colli.transform.gameObject;
-                                        break;
+                                        Debug.Log("goCoord.x % 3 == 0");
+                                        if(colli.transform.position.x != (int)goCoord.x) continue;
+                                        if((int)goCoord.z%3 == 0)
+                                        {
+                                            Debug.Log("goCoord.z%3 == 0");
+                                            if (colli.transform.position.z != (int)goCoord.z) continue;
+                                            else 
+                                            {
+                                                go = colli.transform.gameObject;
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if ((int)goCoord.z < colli.transform.position.z)
+                                            {
+                                                Debug.Log("goCoord.z < colli.transform.position.z");
+                                                if((int)goCoord.z > colli.transform.position.z - 3)
+                                                {
+                                                    Debug.Log("goCoord.z > colli.transform.position.z - 3");
+                                                    go = colli.transform.gameObject;
+                                                    break;
+                                                }
+                                                else continue;
+                                            }
+                                            /*if((int)goCoord.z > colli.transform.position.z)
+                                            {
+                                                Debug.Log("goCoord.z > colli.transform.position.z");
+                                                if ((int)goCoord.z < colli.transform.position.z + 3)
+                                                {
+                                                    Debug.Log("goCoord.z < colli.transform.position.z + 3");
+                                                    go = colli.transform.gameObject;
+                                                    break;
+                                                }
+                                                else continue;
+                                            }*/
+                                        }
                                     }
+                                    
+                                    if((int)goCoord.z % 3  == 0)
+                                    {
+                                        Debug.Log("goCoord.z % 3  == 0");
+                                        if(colli.transform.position.z != (int)goCoord.z) continue;
+                                        else
+                                        {
+                                            if ((int)goCoord.x < colli.transform.position.x)
+                                            {
+                                                Debug.Log("goCoord.x < colli.transform.position.x");
+                                                if((int)goCoord.x > colli.transform.position.x - 3)
+                                                //goCoord.z = colli.z & colli.x -3 < goCoord.x < colli.x
+                                                {
+                                                    Debug.Log("if(goCoord.x > colli.transform.position.x - 3)");
+                                                    go = colli.transform.gameObject;
+                                                    break;
+                                                }
+                                                else continue;
+                                            }
+                                            /*if((int)goCoord.x > colli.transform.position.x)
+                                            {
+                                                Debug.Log("goCoord.x > colli.transform.position.x");
+                                                if ((int)goCoord.x < colli.transform.position.x + 3)
+                                                {
+                                                    Debug.Log("goCoord.x < colli.transform.position.x + 3");
+                                                    go = colli.transform.gameObject;
+                                                    break;
+                                                }
+                                                else continue;
+                                            }*/
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if ((int)goCoord.x < colli.transform.position.x)
+                                        {
+                                            Debug.Log("goCoord.x < colli.transform.position.x");
+                                            if((int)goCoord.x > colli.transform.position.x - 3)
+                                            //goCoord.z = colli.z & colli.x -3 < goCoord.x < colli.x
+                                            {
+                                                Debug.Log("goCoord.x > colli.transform.position.x - 3");
+                                                if ((int)goCoord.z < colli.transform.position.z)
+                                                {
+                                                    Debug.Log("goCoord.z < colli.transform.position.z");
+                                                    if((int)goCoord.z > colli.transform.position.z - 3)
+                                                    {
+                                                        Debug.Log("goCoord.z > colli.transform.position.z - 3");
+                                                        go = colli.transform.gameObject;
+                                                        break;
+                                                    }
+                                                    else continue;
+                                                }
+                                                /*if((int)goCoord.z > colli.transform.position.z)
+                                                {
+                                                    Debug.Log("goCoord.z > colli.transform.position.z");
+                                                    if ((int)goCoord.z < colli.transform.position.z + 3)
+                                                    {
+                                                        Debug.Log("goCoord.z < colli.transform.position.z + 3");
+                                                        go = colli.transform.gameObject;
+                                                        break;
+                                                    }
+                                                    else continue;
+                                                }*/
+                                            }
+                                            else continue;
+                                        }
+                                        if((int)goCoord.x > colli.transform.position.x)
+                                        {
+                                            Debug.Log("goCoord.x > colli.transform.position.x");
+                                            if ((int)goCoord.x < colli.transform.position.x + 3)
+                                            {
+                                                Debug.Log("goCoord.x < colli.transform.position.x + 3");
+                                                if ((int)goCoord.z < colli.transform.position.z)
+                                                {
+                                                    Debug.Log("goCoord.z < colli.transform.position.z");
+                                                    if((int)goCoord.z > colli.transform.position.z - 3)
+                                                    {
+                                                        Debug.Log("goCoord.z > colli.transform.position.z - 3");
+                                                        go = colli.transform.gameObject;
+                                                        break;
+                                                    }
+                                                    else continue;
+                                                }
+                                                /*if((int)goCoord.z > colli.transform.position.z)
+                                                {
+                                                    Debug.Log("goCoord.z > colli.transform.position.z");
+                                                    if ((int)goCoord.z < colli.transform.position.z + 3)
+                                                    {
+                                                        Debug.Log("goCoord.z < colli.transform.position.z + 3");
+                                                        go = colli.transform.gameObject;
+                                                        break;
+                                                    }
+                                                    else continue;
+                                                }*/
+                                            }
+                                            else continue;
+                                        }
+                                    }
+                                    
                                 }
+                                
                             }
+                            Debug.Log("raycastHit.transform.name" + raycastHit.transform.name);
+                            if(go.name == "fer(Clone)") 
+                            {
+                                mine.enabled = true;
+                            }
+                            else mine.enabled = false;
                             Debug.Log($"Go.name : {go.name}");
                             Debug.Log($"go.coord {go.transform.position.x},{go.transform.position.z}");
                             Debug.Log($"goCoord : {goCoord.x},{goCoord.z}");
+
                         }
                         else rightClick = false;
                     }
@@ -331,7 +469,6 @@ public class ChangeState : MonoBehaviourPun
 
         Debug.Log($"go.tag before {go.tag}");
         goView.RPC("changeMesh", RpcTarget.All); 
-        go.tag = "Intermediate";
         Invoke("destroyWall",5);
         Debug.Log($"go.tag after {go.tag}");
     }

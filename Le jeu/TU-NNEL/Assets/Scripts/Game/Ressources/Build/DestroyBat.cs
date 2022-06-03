@@ -30,5 +30,19 @@ public class DestroyBat : MonoBehaviourPun
             Ressources.population.suppRessource(10);
             Pop.update = false;
         }
+        if(save.name == "mineMetauxPrefab(Clone)")
+        {
+            Batiments.destroy("Mine");
+            Ressources.pierre.addRessource(15);
+            Stone.update = false;
+        }
+        if(save.name == "CentreDeRecherchePrefab(Clone)")
+        {
+            Batiments.destroy("Labo");
+            Ressources.pierre.addRessource(15);
+            Ressources.metal.addRessource(5);
+            Stone.update = false;
+            Metal.update = false;
+        }
     }
 }

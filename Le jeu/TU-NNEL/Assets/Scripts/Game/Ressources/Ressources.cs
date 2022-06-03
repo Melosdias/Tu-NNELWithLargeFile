@@ -67,10 +67,10 @@ public  class Ressources : MonoBehaviour
     */
     public static void generation(string type, uint nbBat )
     {
-        Debug.Log($"type : {type}");
+        
         if(type == "pierre")
         {
-            Debug.Log("type == pierre");
+            
             if (nbBat > 0)
             {
                 Ressources.pierre.Quant+= (Ressources.pierre.Obtention*nbBat);
@@ -79,13 +79,14 @@ public  class Ressources : MonoBehaviour
         }
         if(type == "metal")
         {
-            Debug.Log("type == metal");
+            
             if (nbBat > 0)
             {
                 Ressources.metal.Quant+= (Ressources.metal.Obtention*nbBat);
                 Metal.update = false;
             }
         }   
+        
     } 
     
 

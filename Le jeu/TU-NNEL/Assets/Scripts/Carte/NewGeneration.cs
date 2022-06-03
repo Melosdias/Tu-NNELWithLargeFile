@@ -30,7 +30,8 @@ public class NewGeneration : MonoBehaviourPun
     {
         
         int NombreAuPif = rnd.Next(0,100);
-        if (NombreAuPif < 50) return "pierre";
+        if (NombreAuPif < 15) return "fer";
+        if(NombreAuPif < 41) return "pierre";
         else return "boue";
     }
     public void GenererLaCarte()
