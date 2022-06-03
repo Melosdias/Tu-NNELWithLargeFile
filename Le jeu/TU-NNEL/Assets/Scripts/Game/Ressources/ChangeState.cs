@@ -9,6 +9,7 @@ using Photon.Realtime;
 using UnityEngine.UI;
 
 
+
 public class ChangeState : MonoBehaviourPun
 {
     //[SerializeField] private GameObject Batiment;
@@ -23,15 +24,18 @@ public class ChangeState : MonoBehaviourPun
     #endregion
     public Material intact;
     public Material intermediate;
-    public static GameObject go;
-    public static Vector3 goCoord;
+    public static GameObject floor;
+    public static Vector3 floorCoord;
+    public static GameObject wall;
+    public static Vector3 wallCoord;
+    public static GameObject building;
+    public static Vector3 buildingCoord;
     private bool changing = false;
     public GameObject buildMenu;
     private bool rightClick;
     public static bool builded = false;
-    public LayerMask minerai;
-    public LayerMask wall;
-
+    public LayerMask layerWall;
+    public LayerMask layerGround;
     private GameObject larbin;
     private bool buildWall;
     public Button mine;
@@ -47,13 +51,15 @@ public class ChangeState : MonoBehaviourPun
         mineMetauxMenu.SetActive(false);
         labMenu.SetActive(false);
         rightClick = false;
-        minerai = LayerMask.GetMask("minerai");
-        wall = LayerMask.GetMask("Wall");
+        //LayerMask layerWall = LayerMask.GetMask("Wall");
+        //LayerMask layerGround = LayerMask.GetMask("Sol");
         mine.enabled = false;
         
     }
     void Update()
     {
+        
+        #region LeftClick
         if(Input.GetMouseButtonDown(0) && !rightClick)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -61,7 +67,7 @@ public class ChangeState : MonoBehaviourPun
 
             Debug.Log("Left click");
             
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, wall))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerWall))
             {
                 Debug.Log($"hit.transform.parent {hit.transform.parent}");
                 Debug.Log($"hit.transform.gameObject.name {hit.transform.gameObject.name}");
@@ -98,9 +104,9 @@ public class ChangeState : MonoBehaviourPun
                         if (!changing && hit.transform.tag == "Intact")
                         {
 
-                            go = hit.transform.gameObject;
+                            wall = hit.transform.gameObject;
                             LayerMask layerMask = LayerMask.GetMask("Wall");
-                            Collider[] collider = Physics.OverlapSphere(go.transform.position, 3, layerMask);
+                            Collider[] collider = Physics.OverlapSphere(wall.transform.position, 3, layerMask);
                             Debug.Log($"collider.Length {collider.Length}");
                             if (collider.Length >= 9)
                             {
@@ -124,25 +130,25 @@ public class ChangeState : MonoBehaviourPun
                                     foreach (Collider colli in collider)
                                     {
                                         //Debug.Log($"colli.transform.position {colli.transform.position.x}, {colli.transform.position.z}");
-                                        if (colli.transform.position.x == go.transform.position.x + 3 && colli.transform.position.z == go.transform.position.z)
+                                        if (colli.transform.position.x == wall.transform.position.x + 3 && colli.transform.position.z == wall.transform.position.z)
                                         {
                                             //Debug.Log($"right");
                                             right = false;
                                             continue;
                                         }
-                                        if (colli.transform.position.x == go.transform.position.x - 3 && colli.transform.position.z == go.transform.position.z)
+                                        if (colli.transform.position.x == wall.transform.position.x - 3 && colli.transform.position.z == wall.transform.position.z)
                                         {
                                             //Debug.Log($"left");
                                             left = false;
                                             continue;
                                         }
-                                        if (colli.transform.position.x == go.transform.position.x && colli.transform.position.z == go.transform.position.z + 3)
+                                        if (colli.transform.position.x == wall.transform.position.x && colli.transform.position.z == wall.transform.position.z + 3)
                                         {
                                             //Debug.Log($"bot");
                                             bot = false;
                                             continue;
                                         }
-                                        if (colli.transform.position.x == go.transform.position.x && colli.transform.position.z == go.transform.position.z - 3)
+                                        if (colli.transform.position.x == wall.transform.position.x && colli.transform.position.z == wall.transform.position.z - 3)
                                         {
                                             //Debug.Log($"right");
                                             top = false;
@@ -170,6 +176,9 @@ public class ChangeState : MonoBehaviourPun
             }
             
         }
+        #endregion
+
+        #region constructionEnCours
         if(builded)
         {
             rightClick = false;
@@ -183,11 +192,14 @@ public class ChangeState : MonoBehaviourPun
             labMenu.SetActive(false);
             builded = false;
         }
+        #endregion
+
+        #region rightCLick
         if(Input.GetMouseButtonDown(1) )
         {
             Debug.Log("Right click");
             Vector3 mousePos = Input.mousePosition;
-            //Debug.Log($"Mpuse pos {mousePos}");
+            #region deuxièmeClickDroit
             if(rightClick)
             {
                 rightClick = false;
@@ -199,15 +211,17 @@ public class ChangeState : MonoBehaviourPun
                 labMenu.SetActive(false);
                 mineMetauxMenu.SetActive(false);
             }
+            #endregion
+
+            #region premierClickDroit
             else
             {
-                //Debug.Log("else");
-                LayerMask layerWall = LayerMask.GetMask("Wall");
-                LayerMask layerGround = LayerMask.GetMask("Sol");
+                Debug.Log("else");
                 Ray ray = theCamera.ScreenPointToRay(mousePos);
                 RaycastHit hit;
                 rightClick = true;
-                //Click droit sur un mur
+               
+               #region clickDroitSurLayerWall
                 if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerWall))
                 {
                     Debug.Log($"On a cliqué sur : {hit.transform.gameObject.name}");
@@ -216,9 +230,9 @@ public class ChangeState : MonoBehaviourPun
                         Debug.Log("Is a wall");
                         if (hit.transform.gameObject.tag != "reinforced")
                         {
-                            go = hit.transform.gameObject;
+                            wall = hit.transform.gameObject;
                             wallMenu.SetActive(true);
-                            goCoord = go.transform.position;
+                            wallCoord = wall.transform.position;
                         }
                     }
                     else
@@ -229,34 +243,37 @@ public class ChangeState : MonoBehaviourPun
                     {
 
                         houseMenu.SetActive(true);
-                        go = hit.transform.gameObject;
+                        building = hit.transform.gameObject;
                         
                     }
                     if(hit.transform.parent != null &&  (hit.transform.parent.name == "CasernePrefab(Clone)")
                     || hit.transform.gameObject.name == "CasernePrefab(Clone)") //On a cliqué sur la caserne
                     {
                         barrackMenu.SetActive(true);
-                        go = hit.transform.gameObject;
+                        building = hit.transform.gameObject;
                     }
                     if (hit.transform.parent != null && (hit.transform.parent.name == "Base(Clone)") || hit.transform.gameObject.name == "Base(Clone)") //On a cliqué sur la base
                     {
                         baseMenu.SetActive(true);
-                        go = hit.transform.gameObject;
+                        building = hit.transform.gameObject;
                     }
                     if(hit.transform.parent != null &&  (hit.transform.parent.name == "mineMetauxPrefab(Clone)")
                     || hit.transform.gameObject.name == "mineMetauxPrefab(Clone)") 
                     {
                         mineMetauxMenu.SetActive(true);
-                        go = hit.transform.gameObject;
+                        building = hit.transform.gameObject;
                     }
                     if(hit.transform.parent != null &&  (hit.transform.parent.name == "CentreDeRecherchePrefab(Clone)")
                     || hit.transform.gameObject.name == "CentreDeRecherchePrefab(Clone)") 
                     {
                         labMenu.SetActive(true);
-                        go = hit.transform.gameObject;
+                        building = hit.transform.gameObject;
                     }
                 }
-                else //On a cliqué sur le sol
+                #endregion
+
+                #region ClickDroitSurLayerSol
+                else 
                 {
                     mine.enabled = false;
                     if (!(Physics.Raycast(ray, out RaycastHit raycastHit1, float.MaxValue, layerWall)) 
@@ -264,46 +281,47 @@ public class ChangeState : MonoBehaviourPun
                     {
                         rightClick = true;
                         Debug.Log("if sol");
+                        #region freeFloor
                         if(raycastHit.transform.tag == "free")
                         {
                             transform.position = raycastHit.point;
                             buildMenu.SetActive(true);
-                            go = raycastHit.transform.gameObject;
-                            Debug.Log($"go.coord {((int)go.transform.position.x)},{(int)go.transform.position.z}");
+                            floor = raycastHit.transform.gameObject;
+                            Debug.Log($"go.coord {((int)floor.transform.position.x)},{(int)floor.transform.position.z}");
                             buildMenu.transform.position = new Vector3(raycastHit.point.x, 3, raycastHit.point.z);
-                            goCoord = raycastHit.point;
+                            floorCoord = raycastHit.point;
                             //Je veux sauvegarder le sol sur lequel on a cliqué
-                            if(go.transform.position.x != goCoord.x || go.transform.position.z != goCoord.z)
+                            if(floor.transform.position.x != floorCoord.x || floor.transform.position.z != floorCoord.z)
                             {
                                 Debug.Log("go.transform.position.x != goCoord.x || go.transform.position.z != goCoord.z");
-                                Collider[] collider = Physics.OverlapSphere(go.transform.position, 3, layerGround);
+                                Collider[] collider = Physics.OverlapSphere(floor.transform.position, 3, layerGround);
                                 Debug.Log($"Collider.Count {collider.Length}");
                                 foreach(Collider colli in collider)
                                 {
                                     Debug.Log($"colli : {colli.transform.position.x}, {colli.transform.position.z}");
-                                    if((int)goCoord.x % 3 == 0)
+                                    if((int)floorCoord.x % 3 == 0)
                                     {
                                         Debug.Log("goCoord.x % 3 == 0");
-                                        if(colli.transform.position.x != (int)goCoord.x) continue;
-                                        if((int)goCoord.z%3 == 0)
+                                        if(colli.transform.position.x != (int)floorCoord.x) continue;
+                                        if((int)floorCoord.z%3 == 0)
                                         {
                                             Debug.Log("goCoord.z%3 == 0");
-                                            if (colli.transform.position.z != (int)goCoord.z) continue;
+                                            if (colli.transform.position.z != (int)floorCoord.z) continue;
                                             else 
                                             {
-                                                go = colli.transform.gameObject;
+                                                floor = colli.transform.gameObject;
                                                 break;
                                             }
                                         }
                                         else
                                         {
-                                            if ((int)goCoord.z < colli.transform.position.z)
+                                            if ((int)floorCoord.z < colli.transform.position.z)
                                             {
                                                 Debug.Log("goCoord.z < colli.transform.position.z");
-                                                if((int)goCoord.z > colli.transform.position.z - 3)
+                                                if((int)floorCoord.z > colli.transform.position.z - 3)
                                                 {
                                                     Debug.Log("goCoord.z > colli.transform.position.z - 3");
-                                                    go = colli.transform.gameObject;
+                                                    floor = colli.transform.gameObject;
                                                     break;
                                                 }
                                                 else continue;
@@ -322,20 +340,20 @@ public class ChangeState : MonoBehaviourPun
                                         }
                                     }
                                     
-                                    if((int)goCoord.z % 3  == 0)
+                                    if((int)floorCoord.z % 3  == 0)
                                     {
                                         Debug.Log("goCoord.z % 3  == 0");
-                                        if(colli.transform.position.z != (int)goCoord.z) continue;
+                                        if(colli.transform.position.z != (int)floorCoord.z) continue;
                                         else
                                         {
-                                            if ((int)goCoord.x < colli.transform.position.x)
+                                            if ((int)floorCoord.x < colli.transform.position.x)
                                             {
                                                 Debug.Log("goCoord.x < colli.transform.position.x");
-                                                if((int)goCoord.x > colli.transform.position.x - 3)
+                                                if((int)floorCoord.x > colli.transform.position.x - 3)
                                                 //goCoord.z = colli.z & colli.x -3 < goCoord.x < colli.x
                                                 {
                                                     Debug.Log("if(goCoord.x > colli.transform.position.x - 3)");
-                                                    go = colli.transform.gameObject;
+                                                    floor = colli.transform.gameObject;
                                                     break;
                                                 }
                                                 else continue;
@@ -355,20 +373,20 @@ public class ChangeState : MonoBehaviourPun
                                     }
                                     else
                                     {
-                                        if ((int)goCoord.x < colli.transform.position.x)
+                                        if ((int)floorCoord.x < colli.transform.position.x)
                                         {
                                             Debug.Log("goCoord.x < colli.transform.position.x");
-                                            if((int)goCoord.x > colli.transform.position.x - 3)
+                                            if((int)floorCoord.x > colli.transform.position.x - 3)
                                             //goCoord.z = colli.z & colli.x -3 < goCoord.x < colli.x
                                             {
                                                 Debug.Log("goCoord.x > colli.transform.position.x - 3");
-                                                if ((int)goCoord.z < colli.transform.position.z)
+                                                if ((int)floorCoord.z < colli.transform.position.z)
                                                 {
                                                     Debug.Log("goCoord.z < colli.transform.position.z");
-                                                    if((int)goCoord.z > colli.transform.position.z - 3)
+                                                    if((int)floorCoord.z > colli.transform.position.z - 3)
                                                     {
                                                         Debug.Log("goCoord.z > colli.transform.position.z - 3");
-                                                        go = colli.transform.gameObject;
+                                                        floor = colli.transform.gameObject;
                                                         break;
                                                     }
                                                     else continue;
@@ -384,22 +402,23 @@ public class ChangeState : MonoBehaviourPun
                                                     }
                                                     else continue;
                                                 }*/
+                                            
                                             }
                                             else continue;
                                         }
-                                        if((int)goCoord.x > colli.transform.position.x)
+                                        if((int)floorCoord.x > colli.transform.position.x)
                                         {
                                             Debug.Log("goCoord.x > colli.transform.position.x");
-                                            if ((int)goCoord.x < colli.transform.position.x + 3)
+                                            if ((int)floorCoord.x < colli.transform.position.x + 3)
                                             {
                                                 Debug.Log("goCoord.x < colli.transform.position.x + 3");
-                                                if ((int)goCoord.z < colli.transform.position.z)
+                                                if ((int)floorCoord.z < colli.transform.position.z)
                                                 {
                                                     Debug.Log("goCoord.z < colli.transform.position.z");
-                                                    if((int)goCoord.z > colli.transform.position.z - 3)
+                                                    if((int)floorCoord.z > colli.transform.position.z - 3)
                                                     {
                                                         Debug.Log("goCoord.z > colli.transform.position.z - 3");
-                                                        go = colli.transform.gameObject;
+                                                        floor = colli.transform.gameObject;
                                                         break;
                                                     }
                                                     else continue;
@@ -424,14 +443,14 @@ public class ChangeState : MonoBehaviourPun
                                 
                             }
                             Debug.Log("raycastHit.transform.name" + raycastHit.transform.name);
-                            if(go.name == "fer(Clone)") 
+                            if(floor.name == "fer(Clone)") 
                             {
                                 mine.enabled = true;
                             }
                             else mine.enabled = false;
-                            Debug.Log($"Go.name : {go.name}");
-                            Debug.Log($"go.coord {go.transform.position.x},{go.transform.position.z}");
-                            Debug.Log($"goCoord : {goCoord.x},{goCoord.z}");
+                            Debug.Log($"Go.name : {floor.name}");
+                            Debug.Log($"go.coord {floor.transform.position.x},{floor.transform.position.z}");
+                            Debug.Log($"goCoord : {floorCoord.x},{floorCoord.z}");
 
                         }
                         else rightClick = false;
@@ -443,9 +462,14 @@ public class ChangeState : MonoBehaviourPun
                 }
                 
             }
+            #endregion
+            
         }
-        
+        #endregion
+            #endregion
+        #endregion    
     }
+
     
                         
     
@@ -463,23 +487,18 @@ public class ChangeState : MonoBehaviourPun
     void transition()
     {
         Debug.Log("transition");
-        PhotonView goView = PhotonView.Get(go);
-
-        Debug.Log($"go.name {go.name}");
-
-        Debug.Log($"go.tag before {go.tag}");
+        PhotonView goView = PhotonView.Get(wall);
         goView.RPC("changeMesh", RpcTarget.All); 
         Invoke("destroyWall",5);
-        Debug.Log($"go.tag after {go.tag}");
+        
     }
     void destroyWall()
     {
         Debug.Log("destroyWall");
-        if(go.activeInHierarchy)
+        if(wall.activeInHierarchy)
         {
-            PhotonView goView = PhotonView.Get(go);
+            PhotonView goView = PhotonView.Get(wall);
             goView.RPC("delete", RpcTarget.All);
-            Debug.Log($"go.activeSelf : {go.activeSelf}");
             changing = false;
             UnitSelection.Instance.mineurs.Enqueue(larbin);
         }

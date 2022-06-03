@@ -8,7 +8,7 @@ public class DestroyBat : MonoBehaviourPun
     public void destroyBat()
     {
         ChangeState.builded = true;
-        save = ChangeState.go;
+        save = ChangeState.building;
         Debug.Log($"Name : {save.name}");
         PhotonView view = PhotonView.Get(save);
         PhotonNetwork.Destroy(view);
