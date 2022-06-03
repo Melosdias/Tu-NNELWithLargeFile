@@ -62,6 +62,7 @@ public class GenerationRessources : MonoBehaviour
     void generate()
     {
         Ressources.generation("pierre", nbBatPierre);
+        Ressources.generation("metal", nbBatIron);
         hasBeenInvoke = false;
     }
 }

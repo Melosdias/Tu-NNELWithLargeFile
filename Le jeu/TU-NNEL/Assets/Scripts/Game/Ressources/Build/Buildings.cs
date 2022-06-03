@@ -202,11 +202,11 @@ public class Buildings : MonoBehaviourPun
     #region Mine
     public void buildTransparentMine()
     {
-        if(Ressources.pierre.Quant >= 15)
+        if(Ressources.pierre.Quant >= 10)
         {
             Ressources.pierre.suppRessource(5);
             Stone.update = false;
-            position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            position = new Vector3(ChangeState.goCoord.x, 0.2f,ChangeState.goCoord.z);
             ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
@@ -238,14 +238,14 @@ public class Buildings : MonoBehaviourPun
             Stone.update = false;
             Ressources.metal.suppRessource(5);
             Metal.update = false;
-            position = new Vector3(ChangeState.goCoord.x, 2.2f,ChangeState.goCoord.z);
+            position = new Vector3(ChangeState.goCoord.x, 0.2f,ChangeState.goCoord.z);
             ChangeState.go.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"Labo.coord {Batiment.transform.position}");
-            Invoke("buildHLabo", waitTime);
+            Invoke("buildLabo", waitTime);
         }
         else
         {
