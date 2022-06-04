@@ -10,7 +10,8 @@ public class NewGeneration : MonoBehaviourPun
     #region Emmeline's part
     public static bool create; 
     public static int seed; 
-
+    public static int i;
+    public static int j;
     
     public static List<(int,int, int)> coordBase = new List<(int, int, int)>();
     public static List<(int,(int,int, int))> coordBaseVithId = new List<(int, (int,int, int))>(); //On a vu plus opti, mais changer coordBase impliquait trop de changement pour un truc dont je suis pas sûre >.>
@@ -149,11 +150,20 @@ public class NewGeneration : MonoBehaviourPun
 
                 if (genM[y,x].isSpawn)
                 {
-                    Base.layer = 9;
-                    //if(!photonView.IsMine) continue;
-                    PhotonNetwork.Instantiate(Base.name, new Vector3(3*y, 1.1f,3*x), Quaternion.identity);
+                    //Base.layer = 9;
+                    if(photonView.IsMine) 
+                    {
+                        Debug.Log("photonView is mine");
+                        //GameObject go = PhotonNetwork.Instantiate(Base.name, new Vector3(3*y, 1.1f,3*x), Quaternion.identity);
+                        Debug.Log($"coordBase.Count {coordBase.Count}");
+                        //if(coordBase.Count == 1) go.tag = "player1";
+                        //else go.tag = "player2";
+                    }
                     coordBase.Add((3*y, 1, 3*x));              
                     coordBaseVithId.Add((coordBase.Count-1, coordBase[coordBase.Count-1]));
+                    /*(i,j) = (x,y);
+                    photonView.RPC("UpdateCoordBase", RpcTarget.All);*/
+                    
                 }
                 if (genM[y,x].isRock && !genM[y,x].isSpawn)
                 {
@@ -179,6 +189,7 @@ public class NewGeneration : MonoBehaviourPun
                     }
                     if (type == "Cube")
                     {
+                        if(!photonView.IsMine)  continue ;
                         Cube.layer = 9;
                         PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));
                     }
@@ -205,6 +216,7 @@ public class NewGeneration : MonoBehaviourPun
         if(!(seed == 0) && !create)
         {
             Debug.Log($"create : {create}");
+            Debug.Log($"coordBase.Count {coordBase.Count}");
             Wait.CoordCam = coordBase;
             GenererLaCarte();
             ConstructMap();
@@ -215,5 +227,13 @@ public class NewGeneration : MonoBehaviourPun
             }
             //Essai de fog of war
         }
+    }
+    [PunRPC]
+    void tagBase(GameObject go)
+    {
+        Debug.Log("tagBase");
+        if(coordBase.Count == 1) go.tag = "player1";
+        else go.tag = "player2";
+        //Wait.CoordCam.Add((3*j, 1, 3*i));
     }
 }

@@ -40,6 +40,9 @@ public class ChangeState : MonoBehaviourPun
     private bool buildWall;
     public Button mine;
 
+    public GameObject cadenas;
+    public GameObject stone;
+    public GameObject stoneCost;
 
 
     void Start()
@@ -239,35 +242,40 @@ public class ChangeState : MonoBehaviourPun
                     {
                         Debug.Log("Not a wall");
                     }
-                    if (hit.transform.gameObject.name == "maisonuntied(Clone)") //On a cliqué sur une maison
+                    Debug.Log($"idPlayer {ControlleurDeCam.idPlayer}");
+                    Debug.Log($"tag : {hit.transform.gameObject.tag}");
+                    if(hit.transform.gameObject.tag == "mine" || (hit.transform.parent != null && hit.transform.parent.tag == "mine"))
                     {
+                        if (hit.transform.gameObject.name == "maisonuntied(Clone)") //On a cliqué sur une maison
+                        {
 
-                        houseMenu.SetActive(true);
-                        building = hit.transform.gameObject;
-                        
-                    }
-                    if(hit.transform.parent != null &&  (hit.transform.parent.name == "CasernePrefab(Clone)")
-                    || hit.transform.gameObject.name == "CasernePrefab(Clone)") //On a cliqué sur la caserne
-                    {
-                        barrackMenu.SetActive(true);
-                        building = hit.transform.gameObject;
-                    }
-                    if (hit.transform.parent != null && (hit.transform.parent.name == "Base(Clone)") || hit.transform.gameObject.name == "Base(Clone)") //On a cliqué sur la base
-                    {
-                        baseMenu.SetActive(true);
-                        building = hit.transform.gameObject;
-                    }
-                    if(hit.transform.parent != null &&  (hit.transform.parent.name == "mineMetauxPrefab(Clone)")
-                    || hit.transform.gameObject.name == "mineMetauxPrefab(Clone)") 
-                    {
-                        mineMetauxMenu.SetActive(true);
-                        building = hit.transform.gameObject;
-                    }
-                    if(hit.transform.parent != null &&  (hit.transform.parent.name == "CentreDeRecherchePrefab(Clone)")
-                    || hit.transform.gameObject.name == "CentreDeRecherchePrefab(Clone)") 
-                    {
-                        labMenu.SetActive(true);
-                        building = hit.transform.gameObject;
+                            houseMenu.SetActive(true);
+                            building = hit.transform.gameObject;
+                            
+                        }
+                        if(hit.transform.parent != null &&  (hit.transform.parent.name == "CasernePrefab(Clone)")
+                        || hit.transform.gameObject.name == "CasernePrefab(Clone)") //On a cliqué sur la caserne
+                        {
+                            barrackMenu.SetActive(true);
+                            building = hit.transform.gameObject;
+                        }
+                        if (hit.transform.parent != null && (hit.transform.parent.name == "Base(Clone)") || hit.transform.gameObject.name == "Base(Clone)") //On a cliqué sur la base
+                        {
+                            baseMenu.SetActive(true);
+                            building = hit.transform.gameObject;
+                        }
+                        if(hit.transform.parent != null &&  (hit.transform.parent.name == "mineMetauxPrefab(Clone)")
+                        || hit.transform.gameObject.name == "mineMetauxPrefab(Clone)") 
+                        {
+                            mineMetauxMenu.SetActive(true);
+                            building = hit.transform.gameObject;
+                        }
+                        if(hit.transform.parent != null &&  (hit.transform.parent.name == "CentreDeRecherchePrefab(Clone)")
+                        || hit.transform.gameObject.name == "CentreDeRecherchePrefab(Clone)") 
+                        {
+                            labMenu.SetActive(true);
+                            building = hit.transform.gameObject;
+                        }
                     }
                 }
                 #endregion
@@ -446,8 +454,17 @@ public class ChangeState : MonoBehaviourPun
                             if(floor.name == "fer(Clone)") 
                             {
                                 mine.enabled = true;
+                                stone.SetActive(true);
+                                stoneCost.SetActive(true);
+                                cadenas.SetActive(false);
                             }
-                            else mine.enabled = false;
+                            else 
+                            {
+                                mine.enabled = false;
+                                cadenas.SetActive(true);
+                                stone.SetActive(false);
+                                stoneCost.SetActive(false);
+                            }
                             Debug.Log($"Go.name : {floor.name}");
                             Debug.Log($"go.coord {floor.transform.position.x},{floor.transform.position.z}");
                             Debug.Log($"goCoord : {floorCoord.x},{floorCoord.z}");

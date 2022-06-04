@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Runtime;
 using System;
+using Photon.Pun;
 
 public class ControlleurDeCam : MonoBehaviour
 {
     #region Emmeline's part
     public static bool init;
     public static int idPlayer;
+    [SerializeField]  private GameObject Base;
     //public static 
     #endregion
 
@@ -39,7 +41,10 @@ public class ControlleurDeCam : MonoBehaviour
             position.y = 15;
             position.z =  NewGeneration.coordBase[idPlayer].Item3 -5;
             init = true;
-            
+
+            GameObject go = PhotonNetwork.Instantiate(Base.name, new Vector3(NewGeneration.coordBase[idPlayer].Item1,NewGeneration.coordBase[idPlayer].Item2,NewGeneration.coordBase[idPlayer].Item3), Quaternion.identity);
+            go.tag = "mine";
+            go.layer = 9;
         }
 
         //Determiner l'aire de mouvement de la caméra

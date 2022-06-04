@@ -108,6 +108,7 @@ public class Buildings : MonoBehaviourPun
                         Stone.update = false;
                         Batiment.layer = 9;
                         GameObject reinforcmeent = PhotonNetwork.Instantiate(transparentBatiment.name, position , quaternion);
+                        go.tag = "mine";
                         view = PhotonView.Get(reinforcmeent);
                         Debug.Log($"view : {view.ViewID}");
                         ChangeState.builded = true;
@@ -129,6 +130,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, quaternion);
+        go.tag = "mine";
         Debug.Log($"Pop actuelle : {Ressources.population.Quant}");
         //Debug.Log($"Nb batiment {Batiments.ListBat.Count}");
     }
@@ -145,6 +147,7 @@ public class Buildings : MonoBehaviourPun
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.Euler(new Vector3(Batiment.transform.eulerAngles.x, Batiment.transform.eulerAngles.y+90, Batiment.transform.eulerAngles.z+90)));
+            go.tag = "mine";
             view = PhotonView.Get(go);
             Debug.Log($"view : {view.ViewID}");
             ChangeState.builded = true;
@@ -162,6 +165,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.Euler(new Vector3(Batiment.transform.eulerAngles.x, Batiment.transform.eulerAngles.y+90, Batiment.transform.eulerAngles.z+90)));
+        go.tag = "mine";  
         Batiments.build("House");
         Ressources.population.addRessource(10);
         Pop.update = false;
@@ -180,6 +184,7 @@ public class Buildings : MonoBehaviourPun
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position,Quaternion.identity);
+            go.tag = "mine";
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"House.coord {Batiment.transform.position}");
@@ -196,6 +201,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.tag = "mine";
         Batiments.build("Quarry");
     }
     #endregion
@@ -210,6 +216,7 @@ public class Buildings : MonoBehaviourPun
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
+            go.tag = "mine";
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"House.coord {Batiment.transform.position}");
@@ -226,6 +233,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.tag = "mine";
         Batiments.build("Mine");
     }
     #endregion
@@ -242,6 +250,7 @@ public class Buildings : MonoBehaviourPun
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
+            go.tag = "mine";
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"Labo.coord {Batiment.transform.position}");
@@ -264,6 +273,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.tag = "mine";
         Batiments.build("Labo");
         
     }
@@ -279,6 +289,7 @@ public class Buildings : MonoBehaviourPun
             Batiment.layer = 9;
             ChangeState.floor.tag = "notFree";
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.identity);
+            go.tag = "mine";
             view = PhotonView.Get(go);
             Debug.Log($"viewId : {view.ViewID}");
             ChangeState.builded = true;
@@ -296,6 +307,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.tag = "mine";
         Batiments.build("Barracks");
         
         
@@ -314,6 +326,7 @@ public class Buildings : MonoBehaviourPun
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
+            go.tag = "mine";
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"RobotBay.coord {Batiment.transform.position}");
@@ -336,6 +349,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.tag = "mine";
         Batiments.build("RobotBay");
         
     }

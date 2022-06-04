@@ -148,3 +148,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   mine: {fileID: 0}
+  cadenas: {fileID: 0}
+  stone: {fileID: 0}
+  stoneCost: {fileID: 0}

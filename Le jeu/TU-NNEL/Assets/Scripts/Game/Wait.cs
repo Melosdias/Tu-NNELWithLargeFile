@@ -21,6 +21,7 @@ public class Wait : MonoBehaviourPun
             photonView.RPC("SetSeed", RpcTarget.AllBuffered, Random.Range(1000,99999999));
             photonView.RPC("CoordBase", RpcTarget.AllBuffered);
         }
+        //else photonView.RPC("CoordBase", RpcTarget.AllBuffered);
         
     }
     void Update()
@@ -28,8 +29,13 @@ public class Wait : MonoBehaviourPun
 
         if (CreateAndJoinRooms.player == 2)
         {
+            //if(!PhotonNetwork.IsMasterClient) photonView.RPC("CoordBase", RpcTarget.All);
             photonView.RPC("UpdateTagMsg", RpcTarget.All);
             
+            foreach (var coord in CoordCam)
+            {
+                Debug.Log($"x : {coord.Item1}, z : {coord.Item3}");
+            }
         }
     }
  

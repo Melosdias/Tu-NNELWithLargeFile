@@ -18,7 +18,7 @@ public class Victory : MonoBehaviour
             victoryScreen.SetActive(true);
         }
         if(NewGeneration.coordBase.Count == 1)
-        //S'il n'y a plus quy'une base debout
+        //S'il n'y a plus qu'une base debout
         {
             if(NewGeneration.coordBaseVithId[0].Item2 == NewGeneration.coordBase[0]) 
             {
