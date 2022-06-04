@@ -16,6 +16,8 @@ public class NewGeneration : MonoBehaviourPun
     public static List<(int,int, int)> coordBase = new List<(int, int, int)>();
     public static List<(int,(int,int, int))> coordBaseVithId = new List<(int, (int,int, int))>(); //On a vu plus opti, mais changer coordBase impliquait trop de changement pour un truc dont je suis pas sûre >.>
     System.Random rnd = new System.Random(seed); 
+    public static GameObject[,] sky = new GameObject[100, 100];
+    
     #endregion 
     public int size = 100;
 
@@ -46,9 +48,14 @@ public class NewGeneration : MonoBehaviourPun
             Bloc.transform.position = new Vector3(3*i, 0,3*j);
             Bloc.layer = 7;
             PhotonView view = Bloc.AddComponent<PhotonView>() as PhotonView; //Normalement ça ajoute un photonView à ce bloc (et c'est cool)
-
             Bloc.tag = "free";
             map.Add((Bloc, a));
+
+            a = "pierre";
+            GameObject go = (GameObject)Instantiate(Resources.Load(a), transform);
+            go.transform.position = new Vector3(3*i, 4,3*j);
+            go.layer = 6;
+            sky[i,j] = go;
         }
     }
     
@@ -196,9 +203,9 @@ public class NewGeneration : MonoBehaviourPun
 
                     if (type == "Mine")
                     {
+                        if(!photonView.IsMine)  continue ;
                         GreatMine.layer = 9;
                         PhotonNetwork.Instantiate(GreatMine.name, new Vector3(3*y, 2,3*x), Quaternion.Euler(new Vector3(GreatMine.transform.eulerAngles.x, GreatMine.transform.eulerAngles.y+90, GreatMine.transform.eulerAngles.z+90)));
-                        
                     }
                 }
             }
