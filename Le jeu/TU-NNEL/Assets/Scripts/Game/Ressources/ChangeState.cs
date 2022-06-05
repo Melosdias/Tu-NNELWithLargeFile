@@ -14,35 +14,58 @@ public class ChangeState : MonoBehaviourPun
 {
     //[SerializeField] private GameObject Batiment;
     [SerializeField] private Camera theCamera;
-    #region BatMenu
+    #region Menu
     [SerializeField] private GameObject houseMenu;
     [SerializeField] private GameObject baseMenu;
     [SerializeField] private GameObject barrackMenu;
     [SerializeField] private GameObject wallMenu;
     [SerializeField] private GameObject mineMetauxMenu;
     [SerializeField] private GameObject labMenu;
+     public GameObject buildMenu;
     #endregion
-    public Material intact;
-    public Material intermediate;
+    #region gameObject
     public static GameObject floor;
-    public static Vector3 floorCoord;
     public static GameObject wall;
-    public static Vector3 wallCoord;
     public static GameObject building;
-    public static Vector3 buildingCoord;
-    private bool changing = false;
-    public GameObject buildMenu;
-    private bool rightClick;
-    public static bool builded = false;
-    public LayerMask layerWall;
-    public LayerMask layerGround;
+    //[SerializeField] private GameObject Base;
+   
     private GameObject larbin;
-    private bool buildWall;
-    public Button mine;
 
+    //Images
     public GameObject cadenas;
     public GameObject stone;
     public GameObject stoneCost;
+
+
+    #endregion
+    #region bool
+    private bool changing = false;
+    
+    private bool rightClick;
+    public static bool builded = false;
+    private bool buildWall;
+    #endregion
+    #region Vector3
+    public static Vector3 floorCoord;
+    
+    public static Vector3 wallCoord;
+    
+    public static Vector3 buildingCoord;
+    #endregion
+    #region Meterial
+    public Material intact;
+    public Material intermediate;
+    #endregion
+    #region LayerMask
+    public LayerMask layerWall;
+    public LayerMask layerGround;
+    #endregion
+    #region UI
+    public Button mine;
+    #endregion
+    public static List<(int, int)> wallBroken = new List<(int, int)>();
+
+    
 
 
     void Start()
@@ -57,7 +80,6 @@ public class ChangeState : MonoBehaviourPun
         //LayerMask layerWall = LayerMask.GetMask("Wall");
         //LayerMask layerGround = LayerMask.GetMask("Sol");
         mine.enabled = false;
-        
     }
     void Update()
     {
@@ -90,7 +112,7 @@ public class ChangeState : MonoBehaviourPun
                     {
                         if (hit.transform.gameObject.tag == "Intact")
                         {
-                            hit.transform.gameObject.tag = "Intermediate";
+                            //hit.transform.gameObject.tag = "Intermediate";
                             //Debug.Log($"Tag {Minerais.tag}");
                             Ressources.mine(Ressources.coeurEnergie, larbin, hit);
                             hit.transform.gameObject.GetComponent<MeshRenderer>().material = intermediate;
@@ -518,6 +540,53 @@ public class ChangeState : MonoBehaviourPun
             goView.RPC("delete", RpcTarget.All);
             changing = false;
             UnitSelection.Instance.mineurs.Enqueue(larbin);
+
+            #region openTheFow
+            NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3].SetActive(false);
+            if(wall.transform.position.x/3 - 1 > 0) 
+            {
+                NewGeneration.sky[(int)wall.transform.position.x/3-1,(int)wall.transform.position.z/3].SetActive(false);
+                if(wall.transform.position.z/3 - 1 > 0) NewGeneration.sky[(int)wall.transform.position.x/3-1,(int)wall.transform.position.z/3-1].SetActive(false);
+                if(wall.transform.position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)wall.transform.position.x/3-1,(int)wall.transform.position.z/3+1].SetActive(false);
+            }
+            if(wall.transform.position.x/3+1<NewGeneration.sky.Length) 
+            {
+                NewGeneration.sky[(int)wall.transform.position.x/3+1,(int)wall.transform.position.z/3].SetActive(false);
+                if(wall.transform.position.z/3 - 1 > 0) NewGeneration.sky[(int)wall.transform.position.x/3+1,(int)wall.transform.position.z/3-1].SetActive(false);
+                if(wall.transform.position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)wall.transform.position.x/3+1,(int)wall.transform.position.z/3+1].SetActive(false);
+            }
+            if(wall.transform.position.z/3 - 1 > 0) NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3-1].SetActive(false);
+            if(wall.transform.position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3+1].SetActive(false);
+            #endregion
+            Debug.Log($"destroyWall, wall.trasnform.position.x {wall.transform.position.x}, wall.z : {wall.transform.position.z}");
+            if(ControlleurDeCam.idPlayer == 0)
+            {
+                if((wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z -6 == NewGeneration.coordBase[1].Item3))
+                {
+                    goView.RPC("openForBoth", RpcTarget.All);
+                }     
+            }  
+            else 
+            {
+               if((wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3))
+                {
+                    goView.RPC("openForBoth", RpcTarget.All);
+                }  
+            }
         }
         
     }
@@ -535,7 +604,21 @@ public class ChangeState : MonoBehaviourPun
     void delete()
     {
         Debug.Log("delete");
+        wallBroken.Add((1, 1));
         gameObject.SetActive(false);
+    }
+    [PunRPC]
+    void openForBoth()
+    {
+        Debug.Log("openForBoth");
+        //Base.SetActive(true);
+        GameObject[] list =  GameObject.FindObjectsOfType<GameObject>(true);
+        foreach(GameObject go in list)
+        {
+            if (go.name != "obstruction(Clone)") continue;
+            if(go.activeInHierarchy) continue;
+            NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
+        }
     }
 
 

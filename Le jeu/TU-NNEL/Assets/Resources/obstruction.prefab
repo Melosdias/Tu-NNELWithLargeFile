@@ -138,9 +138,12 @@ MonoBehaviour:
   wallMenu: {fileID: 0}
   mineMetauxMenu: {fileID: 0}
   labMenu: {fileID: 0}
+  buildMenu: {fileID: 0}
+  cadenas: {fileID: 0}
+  stone: {fileID: 0}
+  stoneCost: {fileID: 0}
   intact: {fileID: 2100000, guid: 23fbacb5c9d1fe04087252b1cb2c82dc, type: 2}
   intermediate: {fileID: 2100000, guid: ed8f1b02dd338a74c834897b5790981e, type: 2}
-  buildMenu: {fileID: 0}
   layerWall:
     serializedVersion: 2
     m_Bits: 0
@@ -148,6 +151,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   mine: {fileID: 0}
-  cadenas: {fileID: 0}
-  stone: {fileID: 0}
-  stoneCost: {fileID: 0}

@@ -6942,9 +6942,13 @@ MonoBehaviour:
   wallMenu: {fileID: 876539682}
   mineMetauxMenu: {fileID: 1136385087}
   labMenu: {fileID: 420368725}
+  buildMenu: {fileID: 1098965810}
+  Base: {fileID: 3195473508154411803, guid: 5e127ceb07a07b043bd405965cb1a01c, type: 3}
+  cadenas: {fileID: 1594478649}
+  stone: {fileID: 2051235189}
+  stoneCost: {fileID: 22017416}
   intact: {fileID: 2100000, guid: 23fbacb5c9d1fe04087252b1cb2c82dc, type: 2}
   intermediate: {fileID: 2100000, guid: ed8f1b02dd338a74c834897b5790981e, type: 2}
-  buildMenu: {fileID: 1098965810}
   layerWall:
     serializedVersion: 2
     m_Bits: 512
@@ -6952,9 +6956,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   mine: {fileID: 1318143971}
-  cadenas: {fileID: 1594478649}
-  stone: {fileID: 2051235189}
-  stoneCost: {fileID: 22017416}
 --- !u!4 &760141094
 Transform:
   m_ObjectHideFlags: 0
@@ -10886,7 +10887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc136c5a813248408e1ba7ea6018fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 50
+  size: 15
   playerNum: 2
   Mur: {fileID: 357987347003404135, guid: 191dda9310925fc4d9b5109238b470e6, type: 3}
   Base: {fileID: 3195473508154411803, guid: 5e127ceb07a07b043bd405965cb1a01c, type: 3}
@@ -16712,7 +16713,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Base: {fileID: 3195473508154411803, guid: 5e127ceb07a07b043bd405965cb1a01c, type: 3}
-  fogCam: {fileID: 0}
   myRenderer: {fileID: 0}
   vitesse: 20
   limite: 30

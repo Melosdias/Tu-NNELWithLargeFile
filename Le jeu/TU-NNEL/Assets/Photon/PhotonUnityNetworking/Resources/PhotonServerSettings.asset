@@ -50,6 +50,8 @@ MonoBehaviour:
   - deleteCube
   - UpdateCoordBase
   - tagBase
+  - hideToOther
+  - openForBoth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

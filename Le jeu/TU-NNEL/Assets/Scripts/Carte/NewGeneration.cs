@@ -18,6 +18,7 @@ public class NewGeneration : MonoBehaviourPun
     System.Random rnd = new System.Random(seed); 
     public static GameObject[,] sky = new GameObject[100, 100];
     
+    
     #endregion 
     public int size = 100;
 
@@ -53,7 +54,7 @@ public class NewGeneration : MonoBehaviourPun
 
             a = "pierre";
             GameObject go = (GameObject)Instantiate(Resources.Load(a), transform);
-            go.transform.position = new Vector3(3*i, 4,3*j);
+            go.transform.position = new Vector3(3*i, 4f,3*j);
             go.layer = 6;
             sky[i,j] = go;
         }
@@ -170,7 +171,6 @@ public class NewGeneration : MonoBehaviourPun
                     coordBaseVithId.Add((coordBase.Count-1, coordBase[coordBase.Count-1]));
                     /*(i,j) = (x,y);
                     photonView.RPC("UpdateCoordBase", RpcTarget.All);*/
-                    
                 }
                 if (genM[y,x].isRock && !genM[y,x].isSpawn)
                 {
@@ -180,8 +180,6 @@ public class NewGeneration : MonoBehaviourPun
                     Mur.tag = "Intact";
                     Mur.layer = 9;
                 }
-                
-                
                 if (genM[y,x].isRuin)
                 {
                     int a = rnd.Next(0,500);
@@ -198,14 +196,16 @@ public class NewGeneration : MonoBehaviourPun
                     {
                         if(!photonView.IsMine)  continue ;
                         Cube.layer = 9;
-                        PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));
+                        GameObject go = PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  
+                        Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));
                     }
 
                     if (type == "Mine")
                     {
                         if(!photonView.IsMine)  continue ;
                         GreatMine.layer = 9;
-                        PhotonNetwork.Instantiate(GreatMine.name, new Vector3(3*y, 2,3*x), Quaternion.Euler(new Vector3(GreatMine.transform.eulerAngles.x, GreatMine.transform.eulerAngles.y+90, GreatMine.transform.eulerAngles.z+90)));
+                        GameObject go = PhotonNetwork.Instantiate(GreatMine.name, new Vector3(3*y, 2,3*x), 
+                        Quaternion.Euler(new Vector3(GreatMine.transform.eulerAngles.x, GreatMine.transform.eulerAngles.y+90, GreatMine.transform.eulerAngles.z+90)));
                     }
                 }
             }
