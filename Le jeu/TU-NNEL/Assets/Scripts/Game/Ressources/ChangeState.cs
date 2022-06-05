@@ -421,18 +421,6 @@ public class ChangeState : MonoBehaviourPun
                                                     }
                                                     else continue;
                                                 }
-                                                /*if((int)goCoord.z > colli.transform.position.z)
-                                                {
-                                                    Debug.Log("goCoord.z > colli.transform.position.z");
-                                                    if ((int)goCoord.z < colli.transform.position.z + 3)
-                                                    {
-                                                        Debug.Log("goCoord.z < colli.transform.position.z + 3");
-                                                        go = colli.transform.gameObject;
-                                                        break;
-                                                    }
-                                                    else continue;
-                                                }*/
-                                            
                                             }
                                             else continue;
                                         }
@@ -453,17 +441,6 @@ public class ChangeState : MonoBehaviourPun
                                                     }
                                                     else continue;
                                                 }
-                                                /*if((int)goCoord.z > colli.transform.position.z)
-                                                {
-                                                    Debug.Log("goCoord.z > colli.transform.position.z");
-                                                    if ((int)goCoord.z < colli.transform.position.z + 3)
-                                                    {
-                                                        Debug.Log("goCoord.z < colli.transform.position.z + 3");
-                                                        go = colli.transform.gameObject;
-                                                        break;
-                                                    }
-                                                    else continue;
-                                                }*/
                                             }
                                             else continue;
                                         }
@@ -561,32 +538,136 @@ public class ChangeState : MonoBehaviourPun
             Debug.Log($"destroyWall, wall.trasnform.position.x {wall.transform.position.x}, wall.z : {wall.transform.position.z}");
             if(ControlleurDeCam.idPlayer == 0)
             {
-                if((wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && wall.transform.position.z -6 == NewGeneration.coordBase[1].Item3))
+                if((wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 &&
+                (wall.transform.position.z == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordBase[1].Item3))
+                
+                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3))
+                
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z -6 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordBase[1].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordBase[1].Item3)))
                 {
                     goView.RPC("openForBoth", RpcTarget.All);
-                }     
+                }    
             }  
             else 
             {
-               if((wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3)
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3))
+               if((wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 &&
+                (wall.transform.position.z == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordBase[0].Item3))
+                
+                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3))
+                
+                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z -6 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordBase[0].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordBase[0].Item3)))
                 {
                     goView.RPC("openForBoth", RpcTarget.All);
                 }  
             }
+            for(int i = 0; i < NewGeneration.coordCube.Count; i++) 
+            {
+                Debug.Log($"boucle for, i = {i}");
+                if((wall.transform.position.x + 6 == NewGeneration.coordCube[i].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordCube[i].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordCube[i].Item3))
+
+                || (wall.transform.position.x == NewGeneration.coordCube[i].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3))
+
+                || (wall.transform.position.x - 6 == NewGeneration.coordCube[i].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z -6 == NewGeneration.coordCube[i].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordCube[i].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordCube[i].Item3))
+
+                || (wall.transform.position.x + 3 == NewGeneration.coordCube[i].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3))
+
+                || (wall.transform.position.x - 3 == NewGeneration.coordCube[i].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3)))
+                {
+                    Debug.Log("Première boucle for, if");
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
+
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
+                    
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1 ,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
+                    
+                }
+            }
+            for(int j = 0; j < NewGeneration.coordMine.Count; j++)
+            {
+                if((wall.transform.position.x + 6 == NewGeneration.coordMine[j].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordMine[j].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordMine[j].Item3))
+
+                || (wall.transform.position.x == NewGeneration.coordMine[j].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3))
+
+                || (wall.transform.position.x - 6 == NewGeneration.coordMine[j].Item1 && 
+                (wall.transform.position.z == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z -6 == NewGeneration.coordMine[j].Item3
+                || wall.transform.position.z - 3 == NewGeneration.coordMine[j].Item3
+                || wall.transform.position.z + 3 == NewGeneration.coordMine[j].Item3))
+
+                || (wall.transform.position.x + 3 == NewGeneration.coordMine[j].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3
+                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3))
+
+                || (wall.transform.position.x - 3 == NewGeneration.coordMine[j].Item1 && 
+                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
+                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3)))
+                {
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
+
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
+
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false); 
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
+                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1 ,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
+                }
+            }
+            
         }
         
     }
@@ -612,13 +693,45 @@ public class ChangeState : MonoBehaviourPun
     {
         Debug.Log("openForBoth");
         //Base.SetActive(true);
-        GameObject[] list =  GameObject.FindObjectsOfType<GameObject>(true);
+        GameObject[] list =  FindObjectsOfType(typeof(GameObject), true) as GameObject[];
+        Debug.Log($"list.COunt{list.Length}");
         foreach(GameObject go in list)
         {
-            if (go.name != "obstruction(Clone)") continue;
-            if(go.activeInHierarchy) continue;
-            NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
+            //Debug.Log($"go : {go.name}, go.x {go.transform.position.x}, go.z {go.transform.position.z} && active {go.activeInHierarchy}");
+            /*if (go.name != "obstruction(Clone)") continue;
+            if (!go.activeInHierarchy) NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);*/
+            if(go.layer == 8) NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
+            if(go.layer == 9) 
+            {
+                if(go.name == "obstruction(Clone)" && go.activeInHierarchy || go.name == "Le_Cube(Clone)") continue;
+                else NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
+            }
         }
+        if(ControlleurDeCam.idPlayer == 0)
+        {
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 + 1,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3 - 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 + 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1 ,(int)NewGeneration.coordBase[1].Item3/3 - 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
+        }
+        else
+        {
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 + 1,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3 - 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 + 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1 ,(int)NewGeneration.coordBase[0].Item3/3 - 1].SetActive(false);
+            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
+        }
+        ControlleurDeCam.reactivateBase = true;
     }
 
 

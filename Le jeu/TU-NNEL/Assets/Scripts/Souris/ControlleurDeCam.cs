@@ -9,7 +9,9 @@ public class ControlleurDeCam : MonoBehaviour
     public static bool init;
     public static int idPlayer;
     [SerializeField]  private GameObject Base;
+    private GameObject go;
     public Renderer myRenderer;
+    public static bool reactivateBase;
     //public static 
     #endregion
 
@@ -21,7 +23,7 @@ public class ControlleurDeCam : MonoBehaviour
 
     void Start()
     {
-        
+        reactivateBase = false;
     }
 
 
@@ -43,7 +45,7 @@ public class ControlleurDeCam : MonoBehaviour
             position.z =  NewGeneration.coordBase[idPlayer].Item3 -5;
             init = true;
             
-            GameObject go = PhotonNetwork.Instantiate(Base.name, new Vector3(NewGeneration.coordBase[idPlayer].Item1,NewGeneration.coordBase[idPlayer].Item2,NewGeneration.coordBase[idPlayer].Item3), Quaternion.identity);
+            go = PhotonNetwork.Instantiate(Base.name, new Vector3(NewGeneration.coordBase[idPlayer].Item1,NewGeneration.coordBase[idPlayer].Item2,NewGeneration.coordBase[idPlayer].Item3), Quaternion.identity);
             go.tag = "mine";
             go.layer = 9;
             PhotonView goView = PhotonView.Get(go);
@@ -90,6 +92,12 @@ public class ControlleurDeCam : MonoBehaviour
 
         
         }
+        if(reactivateBase)
+        {
+            PhotonView goView = PhotonView.Get(go);
+            goView.RPC("unhideToOther", RpcTarget.OthersBuffered);
+            reactivateBase = false;
+        }
 
         
         if(this.name != "Base(Clone)")
@@ -135,5 +143,12 @@ public class ControlleurDeCam : MonoBehaviour
     {
         Debug.Log("hideToOther");
         gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    void unhideToOther()
+    {
+        Debug.Log("unhideToOther");
+        gameObject.SetActive(true);
     }
 }

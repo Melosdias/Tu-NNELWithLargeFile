@@ -15,6 +15,8 @@ public class NewGeneration : MonoBehaviourPun
     
     public static List<(int,int, int)> coordBase = new List<(int, int, int)>();
     public static List<(int,(int,int, int))> coordBaseVithId = new List<(int, (int,int, int))>(); //On a vu plus opti, mais changer coordBase impliquait trop de changement pour un truc dont je suis pas sûre >.>
+    public static List<(int, int, int)> coordCube = new List<(int, int, int)>();
+    public static List<(int, int, int)> coordMine = new List<(int, int, int)>();
     System.Random rnd = new System.Random(seed); 
     public static GameObject[,] sky = new GameObject[100, 100];
     
@@ -194,6 +196,7 @@ public class NewGeneration : MonoBehaviourPun
                     }
                     if (type == "Cube")
                     {
+                        coordCube.Add((3*y, 1, 3*x));
                         if(!photonView.IsMine)  continue ;
                         Cube.layer = 9;
                         GameObject go = PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  
@@ -202,6 +205,7 @@ public class NewGeneration : MonoBehaviourPun
 
                     if (type == "Mine")
                     {
+                        coordMine.Add((3*y, 2, 3*x));
                         if(!photonView.IsMine)  continue ;
                         GreatMine.layer = 9;
                         GameObject go = PhotonNetwork.Instantiate(GreatMine.name, new Vector3(3*y, 2,3*x), 
@@ -232,15 +236,16 @@ public class NewGeneration : MonoBehaviourPun
             {
                 Debug.Log($"Coordonées de la base : x : {coord.Item1}, y : {coord.Item2}, z: {coord.Item3}");
             }
-            //Essai de fog of war
+            foreach ((int,int, int) coord in coordCube)
+            {
+                Debug.Log($"Coordonées du cube : x : {coord.Item1}, y : {coord.Item2}, z: {coord.Item3}");
+            }
+            foreach ((int,int, int) coord in coordMine)
+            {
+                Debug.Log($"Coordonées de la mine : x : {coord.Item1}, y : {coord.Item2}, z: {coord.Item3}");
+            }
+            
         }
     }
-    [PunRPC]
-    void tagBase(GameObject go)
-    {
-        Debug.Log("tagBase");
-        if(coordBase.Count == 1) go.tag = "player1";
-        else go.tag = "player2";
-        //Wait.CoordCam.Add((3*j, 1, 3*i));
-    }
+    
 }
