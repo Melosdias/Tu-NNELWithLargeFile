@@ -49,53 +49,151 @@ public class ControlleurDeCam : MonoBehaviour
             go.tag = "mine";
             go.layer = 9;
             PhotonView goView = PhotonView.Get(go);
-            goView.RPC("hideToOther", RpcTarget.OthersBuffered);
+            goView.RPC("hideToOther", RpcTarget.OthersBuffered);//Les autres joueurs ne peuvent pas voir la base (sino elle dépasse du fow >.>)
             
-
+            #region ouverturedufogofwar
+            //Quand on a placé la base du joueur, il peut aprrécier que son fog of war soit ouvert au dessus de sa base
             NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3].SetActive(false);
+            ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3].transform.position);
             if(position.x/3 - 1 > 0) 
             {
                 NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) 
+                {
+                    NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
+                    ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) 
+                    {
+                        NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].transform.position);
+
+                    }
+                }
+                
+                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) 
+                {
+                    NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
+                    ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) 
+                    {
+                        NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].transform.position);
+                    }
+                }
+                
             }
             if(position.x/3-2>0) 
             {
                 NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) 
+                {
+                    NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) 
+                    {
+                        NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].transform.position);
+                    }
+                }
+                
+                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) 
+                {
+                    NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) 
+                    {
+                        NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3-2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].transform.position);
+                    }
+                }
+                
             }
             if(position.x/3+1<NewGeneration.sky.Length) 
             {
                 NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) 
+                {
+                    NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
+                    ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) 
+                    {
+                        NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].transform.position);
+                    }
+                }
+                
+                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) 
+                {
+                    NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
+                    ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) 
+                    {
+                        NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+1,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].transform.position);
+                    }
+                }
+                
             }
             if(position.x/3+2<NewGeneration.sky.Length) 
             {
                 NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
-                if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) 
+                {
+                    NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) 
+                    {
+                        NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].transform.position);
+                    }
+                }
+                
+                if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) 
+                {
+                    NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].transform.position);
+                    if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) 
+                    {
+                        NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                        //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3+2,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].transform.position);
+                    }
+                }
+                
             }
-            if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
-            if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
-            if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
-            if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
-
+            if(NewGeneration.coordBase[idPlayer].Item3/3 - 1 > 0) 
+            {
+                NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].SetActive(false);
+                ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-1].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 - 2 > 0) 
+                {
+                    NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3-2].transform.position);
+                }
+            }
+            if(NewGeneration.coordBase[idPlayer].Item3/3 + 1 < NewGeneration.sky.Length) 
+            {
+                NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].SetActive(false);
+                ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+1].transform.position);
+                if(NewGeneration.coordBase[idPlayer].Item3/3 + 2 < NewGeneration.sky.Length) 
+                {
+                    NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].SetActive(false);
+                    //ChangeState.emptyWall.Add(NewGeneration.sky[(int)position.x/3,(int)NewGeneration.coordBase[idPlayer].Item3/3+2].transform.position);
+                }
+            }
+            
+            #endregion
         
         }
         if(reactivateBase)
         {
+            //Quand un joueur a découvert la base de son adversaire, ils peuvent tout les deux voir la base de l'autre
+            
             PhotonView goView = PhotonView.Get(go);
-            goView.RPC("unhideToOther", RpcTarget.OthersBuffered);
+            goView.RPC("unhideToOther", RpcTarget.All);
             reactivateBase = false;
         }
 
@@ -137,6 +235,8 @@ public class ControlleurDeCam : MonoBehaviour
             transform.position = position;
         }
     }
+
+    #region PunRPCs
     [PunRPC]
 
     void hideToOther()
@@ -150,5 +250,53 @@ public class ControlleurDeCam : MonoBehaviour
     {
         Debug.Log("unhideToOther");
         gameObject.SetActive(true);
+        GameObject[] list =  FindObjectsOfType(typeof(GameObject), true) as GameObject[];
+        int compteur = 0;
+        foreach (var go in list)
+        {
+            if(go.name == "Base(Clone)") 
+            {
+                go.SetActive(true);
+                compteur++;
+            }
+            if (compteur == 2) break;
+        }
+        if(idPlayer == 0)
+        {
+            Debug.Log("OpenTheFow calls");
+            if(NewGeneration.coordBase[1].Item1 - 3 > 0)
+            {
+                ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 - 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3));
+                if(NewGeneration.coordBase[1].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 - 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 - 3));
+                if(NewGeneration.coordBase[1].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 - 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 + 3));
+            }
+            if(NewGeneration.coordBase[1].Item1 + 3 < NewGeneration.sky.Length) 
+            {
+                ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 + 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3));
+                if(NewGeneration.coordBase[1].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 + 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 - 3));
+                if(NewGeneration.coordBase[1].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1 + 3, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 + 3));
+            }
+            if(NewGeneration.coordBase[1].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 - 3));
+            if(NewGeneration.coordBase[1].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[1].Item1, NewGeneration.coordBase[1].Item2, NewGeneration.coordBase[1].Item3 + 3));
+        }
+        else
+        {
+            Debug.Log("OpenTheFow calls");
+            if(NewGeneration.coordBase[0].Item1 - 3 > 0)
+            {
+                ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 - 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3));
+                if(NewGeneration.coordBase[0].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 - 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3 - 3));
+                if(NewGeneration.coordBase[0].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 - 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[1].Item3 + 3));
+            }
+            if(NewGeneration.coordBase[0].Item1 + 3 < NewGeneration.sky.Length) 
+            {
+                ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 + 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3));
+                if(NewGeneration.coordBase[0].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 + 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3 - 3));
+                if(NewGeneration.coordBase[0].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1 + 3, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3 + 3));
+            }
+            if(NewGeneration.coordBase[0].Item3 - 3 > 0) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3 - 3));
+            if(NewGeneration.coordBase[0].Item3 + 3 < NewGeneration.sky.Length) ChangeState.openTheFow(new Vector3(NewGeneration.coordBase[0].Item1, NewGeneration.coordBase[0].Item2, NewGeneration.coordBase[0].Item3 + 3));
+        }
     }
+    #endregion
 }

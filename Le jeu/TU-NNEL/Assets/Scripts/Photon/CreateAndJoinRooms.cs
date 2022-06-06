@@ -100,7 +100,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         }
         else 
         {
-            error = 2; //Otherwise, the player wanted to join a room that dos not exist
+            error = 2; //Otherwise, the player wanted to join a room that does not exist
             Debug.Log($"OnJoinRoomFailed, error : {error}");
         }
     }

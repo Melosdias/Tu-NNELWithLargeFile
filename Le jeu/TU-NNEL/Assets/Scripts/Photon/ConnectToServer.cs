@@ -8,11 +8,14 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
-        PhotonNetwork.ConnectUsingSettings(); //Gives the power to be connected to the server
+         
+        bool connected = PhotonNetwork.ConnectUsingSettings(); //Gives the power to be connected to the server
+        Debug.Log($"ConnectUsingSettings : {connected}");
     }
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby(); //Gives the power to create and join a room 
+        bool joined = PhotonNetwork.JoinLobby(); //Gives the power to create and join a room 
+        Debug.Log($"JoinLobby {joined}");
     }
 
     public override void OnJoinedLobby()

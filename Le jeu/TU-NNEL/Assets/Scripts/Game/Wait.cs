@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class Wait : MonoBehaviourPun
 {
     public static int seed;
     public static List<(int,int, int)> CoordCam = new List<(int, int, int)>();
     [SerializeField] public GameObject UI;
+    [SerializeField] public Text nameScene;
     [SerializeField] public GameObject Generate;
 
     void Start()
     {
         Debug.Log($"Is master client {PhotonNetwork.IsMasterClient}");
         UI.SetActive(false);
+        nameScene.text += PhotonNetwork.CurrentRoom.Name;
         if(PhotonNetwork.IsMasterClient) 
         {
             Debug.Log("Create");

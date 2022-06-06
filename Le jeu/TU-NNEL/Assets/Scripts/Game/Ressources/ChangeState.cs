@@ -63,7 +63,8 @@ public class ChangeState : MonoBehaviourPun
     #region UI
     public Button mine;
     #endregion
-    public static List<(int, int)> wallBroken = new List<(int, int)>();
+    
+    public static List<Vector3> emptyWall =new List<Vector3>();
 
     
 
@@ -356,17 +357,6 @@ public class ChangeState : MonoBehaviourPun
                                                 }
                                                 else continue;
                                             }
-                                            /*if((int)goCoord.z > colli.transform.position.z)
-                                            {
-                                                Debug.Log("goCoord.z > colli.transform.position.z");
-                                                if ((int)goCoord.z < colli.transform.position.z + 3)
-                                                {
-                                                    Debug.Log("goCoord.z < colli.transform.position.z + 3");
-                                                    go = colli.transform.gameObject;
-                                                    break;
-                                                }
-                                                else continue;
-                                            }*/
                                         }
                                     }
                                     
@@ -388,17 +378,6 @@ public class ChangeState : MonoBehaviourPun
                                                 }
                                                 else continue;
                                             }
-                                            /*if((int)goCoord.x > colli.transform.position.x)
-                                            {
-                                                Debug.Log("goCoord.x > colli.transform.position.x");
-                                                if ((int)goCoord.x < colli.transform.position.x + 3)
-                                                {
-                                                    Debug.Log("goCoord.x < colli.transform.position.x + 3");
-                                                    go = colli.transform.gameObject;
-                                                    break;
-                                                }
-                                                else continue;
-                                            }*/
                                         }
                                     }
                                     else
@@ -536,6 +515,7 @@ public class ChangeState : MonoBehaviourPun
             if(wall.transform.position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3+1].SetActive(false);
             #endregion
             Debug.Log($"destroyWall, wall.trasnform.position.x {wall.transform.position.x}, wall.z : {wall.transform.position.z}");
+            /*#region decouvreLaBaseAdverse
             if(ControlleurDeCam.idPlayer == 0)
             {
                 if((wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 &&
@@ -582,6 +562,9 @@ public class ChangeState : MonoBehaviourPun
                     goView.RPC("openForBoth", RpcTarget.All);
                 }  
             }
+            #endregion
+
+            #region decouvreLeCube
             for(int i = 0; i < NewGeneration.coordCube.Count; i++) 
             {
                 Debug.Log($"boucle for, i = {i}");
@@ -625,7 +608,18 @@ public class ChangeState : MonoBehaviourPun
                     NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1 ,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
                     
                 }
+
+                /*goView.RPC("updateNbCube", RpcTarget.All);
+                if(playersCube == 2) //Si les deux joueurs ont découvert le cube
+                {
+                    //On synchronise les fow parce qu'ils ont au moins un chemin qui les relie
+
+                }*/
+            
             }
+            /*#endregion
+
+            #region decouvreLaGrandeMine
             for(int j = 0; j < NewGeneration.coordMine.Count; j++)
             {
                 if((wall.transform.position.x + 6 == NewGeneration.coordMine[j].Item1 && 
@@ -667,11 +661,203 @@ public class ChangeState : MonoBehaviourPun
                     NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1 ,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
                 }
             }
+            #endregion
             
-        }
-        
+        }*/
+        openTheFow(wall.transform.position);
     }
 
+    public static void openTheFow(Vector3 position)
+    //Quand le joueur casse un mur, il faut ouvrir son fog of war. 
+    //Si le mur cassé a un voisin désactivé, il faut désactiver la celule du plafond correspondante et ainsi de suite
+    {
+        Debug.Log($"openTheFow, position.x {position.x}, position.z {position.z}");
+        LayerMask layer = LayerMask.GetMask("Wall");
+        Collider[] collider = Physics.OverlapSphere(position, 3, layer);
+        /*if(collider.Length < 9)
+        {*/
+        Debug.Log($"emptyWall");
+        /*foreach (var wall in emptyWall)
+        {
+            Debug.Log($"wall.x {wall.x},wall.y {wall.y}, wall.z {wall.z}");
+        }*/
+        NewGeneration.sky[(int)position.x/3, (int)position.z/3].SetActive(false);
+        Debug.Log($"emptyWall.Contains(position) {emptyWall.Contains(position)}");
+        if(!emptyWall.Contains(position)) emptyWall.Add(position);
+        float xColli;
+        float zColli;
+        float xWall = position.x;
+        float zWall = position.z;
+        float yWall = position.y;
+        List<Vector3> freeWall = new List<Vector3>();
+        freeWall.Add(new Vector3(xWall,4, zWall - 3));
+        freeWall.Add(new Vector3(xWall,4, zWall + 3));
+        freeWall.Add(new Vector3(xWall + 3,4, zWall));
+        freeWall.Add(new Vector3(xWall - 3,4, zWall));
+        Debug.Log($"Freewall / Count : {freeWall.Count}");
+        /*foreach (var vec in freeWall)
+        {
+            Debug.Log($"vec.x {vec.x}, vec.y {vec.y}, vec.z {vec.z}");
+        }*/
+        Debug.Log($"Controlleur de cam/idPlayer: {ControlleurDeCam.idPlayer}");
+        Debug.Log($"NewGeneration.coordBase[0] : {NewGeneration.coordBase[0]}");
+        Debug.Log($"NewGeneration.coordBase[1] : {NewGeneration.coordBase[1]}");
+        if(ControlleurDeCam.idPlayer == 0)
+        {
+                if((position.x + 6 == NewGeneration.coordBase[1].Item1 &&
+            (position.z == NewGeneration.coordBase[1].Item3
+            || position.z + 3 == NewGeneration.coordBase[1].Item3
+            || position.z - 3 == NewGeneration.coordBase[1].Item3))
+            
+            || (position.x == NewGeneration.coordBase[1].Item1 && 
+            (position.z + 6 == NewGeneration.coordBase[1].Item3
+            || position.z - 6 == NewGeneration.coordBase[1].Item3))
+            
+            || (position.x - 6 == NewGeneration.coordBase[1].Item1 && 
+            (position.z == NewGeneration.coordBase[1].Item3
+            || position.z + 3 == NewGeneration.coordBase[1].Item3
+            || position.z - 3 == NewGeneration.coordBase[1].Item3))
+
+            || (position.x + 3 == NewGeneration.coordBase[1].Item1 &&
+            (position.z + 6 == NewGeneration.coordBase[1].Item3
+            || position.z - 6 == NewGeneration.coordBase[1].Item3))
+            
+            || (position.x - 3 == NewGeneration.coordBase[1].Item1 &&
+            (position.z + 6 == NewGeneration.coordBase[1].Item3
+            || position.z - 6 == NewGeneration.coordBase[1].Item3)))
+            {
+                Debug.Log($"base pas loin");
+                ControlleurDeCam.reactivateBase = true;
+            }    
+        }  
+        else 
+        {
+            if((position.x + 6 == NewGeneration.coordBase[0].Item1 &&
+            (position.z == NewGeneration.coordBase[0].Item3
+            || position.z + 3 == NewGeneration.coordBase[0].Item3
+            || position.z - 3 == NewGeneration.coordBase[0].Item3))
+            
+            || (position.x == NewGeneration.coordBase[0].Item1 && 
+            (position.z + 6 == NewGeneration.coordBase[0].Item3
+            || position.z - 6 == NewGeneration.coordBase[0].Item3))
+            
+            || (position.x - 6 == NewGeneration.coordBase[0].Item1 && 
+            (position.z == NewGeneration.coordBase[0].Item3
+            || position.z + 3 == NewGeneration.coordBase[0].Item3
+            || position.z - 3 == NewGeneration.coordBase[0].Item3))
+
+            || (position.x + 3 == NewGeneration.coordBase[0].Item1 &&
+            (position.z + 6 == NewGeneration.coordBase[0].Item3
+            || position.z - 6 == NewGeneration.coordBase[0].Item3))
+            
+            || (position.x - 3 == NewGeneration.coordBase[0].Item1 &&
+            (position.z + 6 == NewGeneration.coordBase[0].Item3
+            || position.z - 6 == NewGeneration.coordBase[0].Item3)))
+            {
+                Debug.Log($"base pas loin");
+                ControlleurDeCam.reactivateBase = true;
+            }  
+        }
+        Debug.Log($"colli.Count {collider.Length}");
+        foreach (Collider colli in collider)
+        {
+            if(freeWall.Count == 0) break;
+        
+            if(colli.transform.position.x == position.x)
+            {
+                if(colli.transform.position.z == position.z + 3)
+                {
+                    //Debug.Log("zColli == zWall + 3");
+                    if(colli.name == "obstruction(Clone)")
+                    {
+                        for(int i = 0; i < freeWall.Count; i++)
+                        {
+                            if(freeWall[i].z == position.z + 3) 
+                            {
+                                freeWall.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    if(colli.name == "Base(Clone)" ||(colli.transform.parent != null && colli.transform.parent.name == "Base(Clone)"))
+                    {
+                        Debug.Log("colli.name == base(Clone) ||(colli.transform.parent != null && colli.transform.parent.name == Base(Clone)");
+                        Debug.Log($"colli.x {colli.transform.position.x}, colli.z {colli.transform.position.z}");
+                        ControlleurDeCam.reactivateBase = true;
+                    }
+                
+                    continue;
+                }
+                if(colli.transform.position.z == position.z - 3)
+                {
+                    //Debug.Log("zColli == zWall - 3");
+                    if(colli.name == "obstruction(Clone)")
+                    {
+                        for(int i = 0; i < freeWall.Count; i++)
+                        {
+                            if(freeWall[i].z == position.z - 3) 
+                            {
+                                freeWall.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    continue;
+                }
+                continue;
+            }
+            if(colli.transform.position.z == position.z)
+            {
+                //Debug.Log("zColli == zWall");
+                if(colli.transform.position.x == position.x + 3)
+                {
+                    //Debug.Log("xColli == xWall + 3");
+                    if(colli.name == "obstruction(Clone)")
+                    {
+                        for(int i = 0; i < freeWall.Count; i++)
+                        {
+                            if(freeWall[i].x == position.x + 3) 
+                            {
+                                freeWall.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    continue;
+                }
+                if(colli.transform.position.x == position.x - 3)
+                {
+                    //Debug.Log("xColli == xWall - 3");
+                    if(colli.name == "obstruction(Clone)")
+                    {
+                        for(int i = 0; i < freeWall.Count; i++)
+                        {
+                            if(freeWall[i].x == position.x - 3) 
+                            {
+                                freeWall.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //Debug.Log($"freeWall.Count before {freeWall.Count}");
+        int a = 0;
+        while(a < freeWall.Count)
+        {
+            Vector3 vec = freeWall[a];
+            Debug.Log($"vec.x {vec.x}, vec.y {vec.y}, vec.z {vec.z}");
+            if(emptyWall.Contains(vec)) freeWall.Remove(vec);
+            else a++;
+        }
+        //Debug.Log($"freeWall.Count after {freeWall.Count}");
+        foreach(Vector3 emptyWall in freeWall)
+        {
+            openTheFow(emptyWall);
+        }
+        //}
+    }
 
     
     [PunRPC]
@@ -685,8 +871,9 @@ public class ChangeState : MonoBehaviourPun
     void delete()
     {
         Debug.Log("delete");
-        wallBroken.Add((1, 1));
+        emptyWall.Add(gameObject.transform.position);
         gameObject.SetActive(false);
+        
     }
     [PunRPC]
     void openForBoth()
