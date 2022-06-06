@@ -65,9 +65,9 @@ public class ChangeState : MonoBehaviourPun
     #endregion
     
     public static List<Vector3> emptyWall =new List<Vector3>();
-
-    
-
+    public static bool baseConnected = false;
+    public static (int, int) coord;
+    public static PhotonView view;
 
     void Start()
     {
@@ -81,6 +81,7 @@ public class ChangeState : MonoBehaviourPun
         //LayerMask layerWall = LayerMask.GetMask("Wall");
         //LayerMask layerGround = LayerMask.GetMask("Sol");
         mine.enabled = false;
+        view = PhotonView.Get(this);
     }
     void Update()
     {
@@ -496,7 +497,6 @@ public class ChangeState : MonoBehaviourPun
             goView.RPC("delete", RpcTarget.All);
             changing = false;
             UnitSelection.Instance.mineurs.Enqueue(larbin);
-
             #region openTheFow
             NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3].SetActive(false);
             if(wall.transform.position.x/3 - 1 > 0) 
@@ -515,156 +515,11 @@ public class ChangeState : MonoBehaviourPun
             if(wall.transform.position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)wall.transform.position.x/3,(int)wall.transform.position.z/3+1].SetActive(false);
             #endregion
             Debug.Log($"destroyWall, wall.trasnform.position.x {wall.transform.position.x}, wall.z : {wall.transform.position.z}");
-            /*#region decouvreLaBaseAdverse
-            if(ControlleurDeCam.idPlayer == 0)
-            {
-                if((wall.transform.position.x + 6 == NewGeneration.coordBase[1].Item1 &&
-                (wall.transform.position.z == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordBase[1].Item3))
-                
-                || (wall.transform.position.x == NewGeneration.coordBase[1].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordBase[1].Item3))
-                
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[1].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z + 6 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z -6 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordBase[1].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordBase[1].Item3)))
-                {
-                    goView.RPC("openForBoth", RpcTarget.All);
-                }    
-            }  
-            else 
-            {
-               if((wall.transform.position.x + 6 == NewGeneration.coordBase[0].Item1 &&
-                (wall.transform.position.z == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordBase[0].Item3))
-                
-                || (wall.transform.position.x == NewGeneration.coordBase[0].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordBase[0].Item3))
-                
-                || (wall.transform.position.x - 6 == NewGeneration.coordBase[0].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z + 6 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z -6 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordBase[0].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordBase[0].Item3)))
-                {
-                    goView.RPC("openForBoth", RpcTarget.All);
-                }  
-            }
-            #endregion
-
-            #region decouvreLeCube
-            for(int i = 0; i < NewGeneration.coordCube.Count; i++) 
-            {
-                Debug.Log($"boucle for, i = {i}");
-                if((wall.transform.position.x + 6 == NewGeneration.coordCube[i].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordCube[i].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordCube[i].Item3))
-
-                || (wall.transform.position.x == NewGeneration.coordCube[i].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3))
-
-                || (wall.transform.position.x - 6 == NewGeneration.coordCube[i].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z -6 == NewGeneration.coordCube[i].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordCube[i].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordCube[i].Item3))
-
-                || (wall.transform.position.x + 3 == NewGeneration.coordCube[i].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3))
-
-                || (wall.transform.position.x - 3 == NewGeneration.coordCube[i].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordCube[i].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordCube[i].Item3)))
-                {
-                    Debug.Log("Première boucle for, if");
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
-
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 + 1,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
-                    
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1,(int)NewGeneration.coordCube[i].Item3/3].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1,(int)NewGeneration.coordCube[i].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordCube[i].Item1/3 - 1 ,(int)NewGeneration.coordCube[i].Item3/3 - 1].SetActive(false);
-                    
-                }
-
-                /*goView.RPC("updateNbCube", RpcTarget.All);
-                if(playersCube == 2) //Si les deux joueurs ont découvert le cube
-                {
-                    //On synchronise les fow parce qu'ils ont au moins un chemin qui les relie
-
-                }*/
             
-            }
-            /*#endregion
-
-            #region decouvreLaGrandeMine
-            for(int j = 0; j < NewGeneration.coordMine.Count; j++)
-            {
-                if((wall.transform.position.x + 6 == NewGeneration.coordMine[j].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordMine[j].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordMine[j].Item3))
-
-                || (wall.transform.position.x == NewGeneration.coordMine[j].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3))
-
-                || (wall.transform.position.x - 6 == NewGeneration.coordMine[j].Item1 && 
-                (wall.transform.position.z == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z -6 == NewGeneration.coordMine[j].Item3
-                || wall.transform.position.z - 3 == NewGeneration.coordMine[j].Item3
-                || wall.transform.position.z + 3 == NewGeneration.coordMine[j].Item3))
-
-                || (wall.transform.position.x + 3 == NewGeneration.coordMine[j].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3
-                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3))
-
-                || (wall.transform.position.x - 3 == NewGeneration.coordMine[j].Item1 && 
-                (wall.transform.position.z + 6 == NewGeneration.coordMine[j].Item3 
-                || wall.transform.position.z - 6 == NewGeneration.coordMine[j].Item3)))
-                {
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
-
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 + 1,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
-
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1,(int)NewGeneration.coordMine[j].Item3/3].SetActive(false); 
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1,(int)NewGeneration.coordMine[j].Item3/3 + 1].SetActive(false);
-                    NewGeneration.sky[(int)NewGeneration.coordMine[j].Item1/3 - 1 ,(int)NewGeneration.coordMine[j].Item3/3 - 1].SetActive(false);
-                }
-            }
-            #endregion
-            
-        }*/
-        openTheFow(wall.transform.position);
+            openTheFow(wall.transform.position);
+        }
+        
+        
     }
 
     public static void openTheFow(Vector3 position)
@@ -674,18 +529,34 @@ public class ChangeState : MonoBehaviourPun
         Debug.Log($"openTheFow, position.x {position.x}, position.z {position.z}");
         LayerMask layer = LayerMask.GetMask("Wall");
         Collider[] collider = Physics.OverlapSphere(position, 3, layer);
-        /*if(collider.Length < 9)
-        {*/
         Debug.Log($"emptyWall");
-        /*foreach (var wall in emptyWall)
-        {
-            Debug.Log($"wall.x {wall.x},wall.y {wall.y}, wall.z {wall.z}");
-        }*/
         NewGeneration.sky[(int)position.x/3, (int)position.z/3].SetActive(false);
+        if(position.x/3 - 1 > 0) 
+        {
+            NewGeneration.sky[(int)position.x/3-1,(int)position.z/3].SetActive(false);
+            if(position.z/3 - 1 > 0) NewGeneration.sky[(int)position.x/3-1,(int)position.z/3-1].SetActive(false);
+            if(position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3-1,(int)position.z/3+1].SetActive(false);
+        }
+        if(position.x/3+1<NewGeneration.sky.Length) 
+        {
+            NewGeneration.sky[(int)position.x/3+1,(int)position.z/3].SetActive(false);
+            if(position.z/3 - 1 > 0) NewGeneration.sky[(int)position.x/3+1,(int)position.z/3-1].SetActive(false);
+            if(position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3+1,(int)position.z/3+1].SetActive(false);
+        }
+        if(position.z/3 - 1 > 0) NewGeneration.sky[(int)position.x/3,(int)position.z/3-1].SetActive(false);
+        if(position.z/3 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)position.x/3,(int)position.z/3+1].SetActive(false);
+        if(baseConnected) 
+        {
+            Debug.Log($"view!=null {view!=null}");
+            if(view != null) 
+            {
+                ChangeState.coord = ((int)position.x/3, (int)position.z/3);
+                Debug.Log($"ChangeState.coord {ChangeState.coord}");
+                view.RPC("openForEveryone", RpcTarget.All, ChangeState.coord.Item1, ChangeState.coord.Item2);
+            }
+        }
         Debug.Log($"emptyWall.Contains(position) {emptyWall.Contains(position)}");
         if(!emptyWall.Contains(position)) emptyWall.Add(position);
-        float xColli;
-        float zColli;
         float xWall = position.x;
         float zWall = position.z;
         float yWall = position.y;
@@ -694,17 +565,9 @@ public class ChangeState : MonoBehaviourPun
         freeWall.Add(new Vector3(xWall,4, zWall + 3));
         freeWall.Add(new Vector3(xWall + 3,4, zWall));
         freeWall.Add(new Vector3(xWall - 3,4, zWall));
-        Debug.Log($"Freewall / Count : {freeWall.Count}");
-        /*foreach (var vec in freeWall)
-        {
-            Debug.Log($"vec.x {vec.x}, vec.y {vec.y}, vec.z {vec.z}");
-        }*/
-        Debug.Log($"Controlleur de cam/idPlayer: {ControlleurDeCam.idPlayer}");
-        Debug.Log($"NewGeneration.coordBase[0] : {NewGeneration.coordBase[0]}");
-        Debug.Log($"NewGeneration.coordBase[1] : {NewGeneration.coordBase[1]}");
         if(ControlleurDeCam.idPlayer == 0)
         {
-                if((position.x + 6 == NewGeneration.coordBase[1].Item1 &&
+            if((position.x + 6 == NewGeneration.coordBase[1].Item1 &&
             (position.z == NewGeneration.coordBase[1].Item3
             || position.z + 3 == NewGeneration.coordBase[1].Item3
             || position.z - 3 == NewGeneration.coordBase[1].Item3))
@@ -758,6 +621,7 @@ public class ChangeState : MonoBehaviourPun
                 ControlleurDeCam.reactivateBase = true;
             }  
         }
+        
         Debug.Log($"colli.Count {collider.Length}");
         foreach (Collider colli in collider)
         {
@@ -767,7 +631,6 @@ public class ChangeState : MonoBehaviourPun
             {
                 if(colli.transform.position.z == position.z + 3)
                 {
-                    //Debug.Log("zColli == zWall + 3");
                     if(colli.name == "obstruction(Clone)")
                     {
                         for(int i = 0; i < freeWall.Count; i++)
@@ -790,7 +653,6 @@ public class ChangeState : MonoBehaviourPun
                 }
                 if(colli.transform.position.z == position.z - 3)
                 {
-                    //Debug.Log("zColli == zWall - 3");
                     if(colli.name == "obstruction(Clone)")
                     {
                         for(int i = 0; i < freeWall.Count; i++)
@@ -808,10 +670,8 @@ public class ChangeState : MonoBehaviourPun
             }
             if(colli.transform.position.z == position.z)
             {
-                //Debug.Log("zColli == zWall");
                 if(colli.transform.position.x == position.x + 3)
                 {
-                    //Debug.Log("xColli == xWall + 3");
                     if(colli.name == "obstruction(Clone)")
                     {
                         for(int i = 0; i < freeWall.Count; i++)
@@ -827,7 +687,6 @@ public class ChangeState : MonoBehaviourPun
                 }
                 if(colli.transform.position.x == position.x - 3)
                 {
-                    //Debug.Log("xColli == xWall - 3");
                     if(colli.name == "obstruction(Clone)")
                     {
                         for(int i = 0; i < freeWall.Count; i++)
@@ -842,7 +701,6 @@ public class ChangeState : MonoBehaviourPun
                 }
             }
         }
-        //Debug.Log($"freeWall.Count before {freeWall.Count}");
         int a = 0;
         while(a < freeWall.Count)
         {
@@ -851,12 +709,10 @@ public class ChangeState : MonoBehaviourPun
             if(emptyWall.Contains(vec)) freeWall.Remove(vec);
             else a++;
         }
-        //Debug.Log($"freeWall.Count after {freeWall.Count}");
-        foreach(Vector3 emptyWall in freeWall)
+        foreach(Vector3 emptyWall in freeWall) 
         {
             openTheFow(emptyWall);
         }
-        //}
     }
 
     
@@ -876,50 +732,24 @@ public class ChangeState : MonoBehaviourPun
         
     }
     [PunRPC]
-    void openForBoth()
+    void openForEveryone(int coord1, int coord2)
     {
-        Debug.Log("openForBoth");
-        //Base.SetActive(true);
-        GameObject[] list =  FindObjectsOfType(typeof(GameObject), true) as GameObject[];
-        Debug.Log($"list.COunt{list.Length}");
-        foreach(GameObject go in list)
+        Debug.Log("openForEveryone");
+        NewGeneration.sky[coord1, coord2].SetActive(false);
+        if(coord1 - 1 > 0) 
         {
-            //Debug.Log($"go : {go.name}, go.x {go.transform.position.x}, go.z {go.transform.position.z} && active {go.activeInHierarchy}");
-            /*if (go.name != "obstruction(Clone)") continue;
-            if (!go.activeInHierarchy) NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);*/
-            if(go.layer == 8) NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
-            if(go.layer == 9) 
-            {
-                if(go.name == "obstruction(Clone)" && go.activeInHierarchy || go.name == "Le_Cube(Clone)") continue;
-                else NewGeneration.sky[(int)go.transform.position.x/3, (int)go.transform.position.z/3].SetActive(false);
-            }
+            NewGeneration.sky[(int)coord1 - 1,(int)coord2].SetActive(false);
+            if(coord2 - 1 > 0) NewGeneration.sky[(int)coord1 - 1,(int)coord2 - 1].SetActive(false);
+            if(coord2 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)coord1 - 1,(int)coord2 + 1].SetActive(false);
         }
-        if(ControlleurDeCam.idPlayer == 0)
+        if(coord1 + 1 < NewGeneration.sky.Length) 
         {
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 + 1,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3,(int)NewGeneration.coordBase[1].Item3/3 - 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 + 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1 ,(int)NewGeneration.coordBase[1].Item3/3 - 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[1].Item1/3 - 1,(int)NewGeneration.coordBase[1].Item3/3 + 1].SetActive(false);
+            NewGeneration.sky[(int)wall.transform.position.x/3+1,(int)coord2].SetActive(false);
+            if(coord2 - 1 > 0) NewGeneration.sky[(int)coord1 + 1,(int)coord2 - 1].SetActive(false);
+            if(coord2 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)coord1 + 1,(int)coord2 + 1].SetActive(false);
         }
-        else
-        {
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 + 1,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3,(int)NewGeneration.coordBase[0].Item3/3 - 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 + 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1 ,(int)NewGeneration.coordBase[0].Item3/3 - 1].SetActive(false);
-            NewGeneration.sky[(int)NewGeneration.coordBase[0].Item1/3 - 1,(int)NewGeneration.coordBase[0].Item3/3 + 1].SetActive(false);
-        }
-        ControlleurDeCam.reactivateBase = true;
+        if(coord2 - 1 > 0) NewGeneration.sky[(int)coord1,(int)coord2 - 1].SetActive(false);
+        if(coord2 + 1 < NewGeneration.sky.Length) NewGeneration.sky[(int)coord1,(int)coord2 + 1].SetActive(false);
     }
-
 
 }

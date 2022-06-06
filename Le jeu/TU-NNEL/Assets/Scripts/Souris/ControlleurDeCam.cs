@@ -195,6 +195,7 @@ public class ControlleurDeCam : MonoBehaviour
             PhotonView goView = PhotonView.Get(go);
             goView.RPC("unhideToOther", RpcTarget.All);
             reactivateBase = false;
+            ChangeState.baseConnected = true;
         }
 
         
