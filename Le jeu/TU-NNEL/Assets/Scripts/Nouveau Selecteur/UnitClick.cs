@@ -4,7 +4,7 @@ public class UnitClick : MonoBehaviour
 {
     private Camera myCam;
 
-    public LayerMask unités;
+    public LayerMask unites;
 
 
     void Start()
@@ -21,18 +21,21 @@ public class UnitClick : MonoBehaviour
 
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, unités))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, unites))
             { 
-                if (Input.GetKey(KeyCode.LeftShift))  //shiftclick
+                if(hit.transform.tag == "mine")
                 {
-                    UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
-                }
-                else                                  //click normal
-                {
-                    UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
+                    if (Input.GetKey(KeyCode.LeftShift))  //shiftclick
+                    {
+                        UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
+                    }
+                    else                                  //click normal
+                    {
+                        UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
+                    }
                 }
             }
-            else                                      //cliqué sur R
+            else                                      //cliquï¿½ sur R
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {

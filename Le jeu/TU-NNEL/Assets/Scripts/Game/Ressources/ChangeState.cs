@@ -52,7 +52,7 @@ public class ChangeState : MonoBehaviourPun
     
     public static Vector3 buildingCoord;
     #endregion
-    #region Meterial
+    #region Material
     public Material intact;
     public Material intermediate;
     #endregion
@@ -78,8 +78,6 @@ public class ChangeState : MonoBehaviourPun
         mineMetauxMenu.SetActive(false);
         labMenu.SetActive(false);
         rightClick = false;
-        //LayerMask layerWall = LayerMask.GetMask("Wall");
-        //LayerMask layerGround = LayerMask.GetMask("Sol");
         mine.enabled = false;
         view = PhotonView.Get(this);
     }
@@ -110,92 +108,6 @@ public class ChangeState : MonoBehaviourPun
                     else
                     {
                         Debug.Log("pas fait");
-                    }
-                    {
-                        if (hit.transform.gameObject.tag == "Intact")
-                        {
-                            //hit.transform.gameObject.tag = "Intermediate";
-                            //Debug.Log($"Tag {Minerais.tag}");
-                            Ressources.mine(Ressources.coeurEnergie, larbin, hit);
-                            hit.transform.gameObject.GetComponent<MeshRenderer>().material = intermediate;
-                        }
-                        else
-                        {
-                            Ressources.mine(Ressources.coeurEnergie, larbin, hit);
-                            //Debug.Log($"Destroyed");
-                            PhotonNetwork.Destroy(hit.transform.gameObject);
-                        }
-                    }
-                    if (hit.transform.name == "obstruction(Clone)") //Si c'est juste un mur à casser
-                    {
-                        if (!changing && hit.transform.tag == "Intact")
-                        {
-
-                            wall = hit.transform.gameObject;
-                            LayerMask layerMask = LayerMask.GetMask("Wall");
-                            Collider[] collider = Physics.OverlapSphere(wall.transform.position, 3, layerMask);
-                            Debug.Log($"collider.Length {collider.Length}");
-                            if (collider.Length >= 9)
-                            {
-                                Debug.Log("Can't hit this wall");
-                            }
-                            else
-                            {
-
-                                if (collider.Length < 5)
-                                {
-                                    changing = true;
-                                    Invoke("transition", 1);
-                                }
-                                else
-                                {
-                                    bool top = true;
-                                    bool bot = true;
-                                    bool right = true;
-                                    bool left = true;
-                                    //Debug.Log($"go.transform.position {go.transform.position.x}, {go.transform.position.z}");
-                                    foreach (Collider colli in collider)
-                                    {
-                                        //Debug.Log($"colli.transform.position {colli.transform.position.x}, {colli.transform.position.z}");
-                                        if (colli.transform.position.x == wall.transform.position.x + 3 && colli.transform.position.z == wall.transform.position.z)
-                                        {
-                                            //Debug.Log($"right");
-                                            right = false;
-                                            continue;
-                                        }
-                                        if (colli.transform.position.x == wall.transform.position.x - 3 && colli.transform.position.z == wall.transform.position.z)
-                                        {
-                                            //Debug.Log($"left");
-                                            left = false;
-                                            continue;
-                                        }
-                                        if (colli.transform.position.x == wall.transform.position.x && colli.transform.position.z == wall.transform.position.z + 3)
-                                        {
-                                            //Debug.Log($"bot");
-                                            bot = false;
-                                            continue;
-                                        }
-                                        if (colli.transform.position.x == wall.transform.position.x && colli.transform.position.z == wall.transform.position.z - 3)
-                                        {
-                                            //Debug.Log($"right");
-                                            top = false;
-                                            continue;
-                                        }
-                                    }
-                                    if (top || bot || left || right)
-                                    {
-                                        changing = true;
-                                        Debug.Log("wallhit");
-                                        
-                                        Invoke("transition", 1);
-                                    }
-                                    else
-                                    {
-                                        Debug.Log("Can't hit this wall");
-                                    }
-                                }
-                            }
-                        }
                     }
                     UnitSelection.Instance.mineurs.Enqueue(larbin);
                 }

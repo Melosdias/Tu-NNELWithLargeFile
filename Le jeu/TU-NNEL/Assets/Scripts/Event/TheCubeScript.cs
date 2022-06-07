@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class TheCubeScript : MonoBehaviourPun
 {
-    [SerializeField] public GameObject aled1; //Canvas
+    [SerializeField] public GameObject canvas; //Canvas
     public static Vector3 position;
     public static PhotonView view;
     public static bool tigerred = false;
@@ -13,12 +13,15 @@ public class TheCubeScript : MonoBehaviourPun
     void OnTriggerEnter(Collider other)
     {
         if (!tigerred)
-        {
-            GameObject Bloc = Object.Instantiate(aled1);
-            aled1.SetActive(true);
-            ChangeState.builded = true;
-            position = this.transform.position;
-            view = PhotonView.Get(this);
+        {   
+            if(other.gameObject.CompareTag("mine"))
+            {
+                GameObject Bloc = Object.Instantiate(canvas);
+                canvas.SetActive(true);
+                ChangeState.builded = true;
+                position = this.transform.position;
+                view = PhotonView.Get(this);
+            }
             tigerred = true;
         }
     }

@@ -315,15 +315,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 116100829}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 809c7ecf8562d48409a3596e1087e4a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 410a3d6e787ba1b448a56a8db1cd8f66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1553554094}
-  number1: {fileID: 21300000, guid: 3639dec0d8218d047864e527ed7abb9b, type: 3}
-  number2: {fileID: 21300000, guid: d1586245ec5baca4f9856a3aa2cbe207, type: 3}
-  number3: {fileID: 21300000, guid: 01885b45f1604f94480727c6eb7d5738, type: 3}
-  number4: {fileID: 21300000, guid: 57e869e8fef475c4fb656493eb3b5cb7, type: 3}
-  number5: {fileID: 21300000, guid: cff04cd82f85db24fa1bb88558e6fd58, type: 3}
+  number1: {fileID: 21300000, guid: b729207b550e3874cb28db2e10ac7f0a, type: 3}
+  number2: {fileID: 21300000, guid: 362931e530a2f594bbb94d03c31458b9, type: 3}
+  number3: {fileID: 21300000, guid: fbdf3cc7e123e3e45a5c7785eb3a1943, type: 3}
+  number4: {fileID: 21300000, guid: 2fcb86790d1c8da49b876e83f8c1c896, type: 3}
+  number5: {fileID: 21300000, guid: e5b20d9deb681514c8f4543943b0e2f0, type: 3}
   delai: 0.05
 --- !u!114 &116100832
 MonoBehaviour:
@@ -346,7 +346,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 5b3fc28374859d34ca200a965491d798, type: 3}
+    m_Font: {fileID: 12800000, guid: ba7932b42a5dd55419e1dcc5ab73b3b1, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0

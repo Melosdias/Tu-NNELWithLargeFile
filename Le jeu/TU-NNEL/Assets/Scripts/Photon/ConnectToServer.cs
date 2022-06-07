@@ -8,7 +8,9 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
-         
+        PhotonNetwork.NetworkingClient.AppId = PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime;
+        PhotonNetwork.ConnectToRegion("eu");
+        PhotonNetwork.ConnectUsingSettings();
         bool connected = PhotonNetwork.ConnectUsingSettings(); //Gives the power to be connected to the server
         Debug.Log($"ConnectUsingSettings : {connected}");
     }

@@ -23,35 +23,44 @@ public class UnitSelection : MonoBehaviour
     }
     public void ClickSelect(GameObject Unité)
     {
-        DeselectAll();
-        unités_selectionnées.Add(Unité);
-        Unité.transform.GetChild(0).gameObject.SetActive(true);
-        Unité.GetComponent<Bouge>().enabled = true;
-    }
-
-    public void ShiftClickSelect(GameObject Unité)
-    {
-        if (!unités_selectionnées.Contains(Unité))
+        if(Unité.tag == "mine")
         {
+            DeselectAll();
             unités_selectionnées.Add(Unité);
             Unité.transform.GetChild(0).gameObject.SetActive(true);
             Unité.GetComponent<Bouge>().enabled = true;
         }
-        else
+    }
+
+    public void ShiftClickSelect(GameObject Unité)
+    {
+        if(Unité.tag == "mine")
         {
-            Unité.GetComponent<Bouge>().enabled = false;
-            Unité.transform.GetChild(0).gameObject.SetActive(false);
-            unités_selectionnées.Remove(Unité);
+            if (!unités_selectionnées.Contains(Unité))
+            {
+                unités_selectionnées.Add(Unité);
+                Unité.transform.GetChild(0).gameObject.SetActive(true);
+                Unité.GetComponent<Bouge>().enabled = true;
+            }
+            else
+            {
+                Unité.GetComponent<Bouge>().enabled = false;
+                Unité.transform.GetChild(0).gameObject.SetActive(false);
+                unités_selectionnées.Remove(Unité);
+            }
         }
     }
 
     public void DragSelect(GameObject Unité)
     {
-        if (!unités_selectionnées.Contains(Unité))
+        if(Unité.tag == "mine")
         {
-            unités_selectionnées.Add(Unité);
-            Unité.transform.GetChild(0).gameObject.SetActive(true);
-            Unité.GetComponent<Bouge>().enabled = true;
+            if (!unités_selectionnées.Contains(Unité))
+            {
+                unités_selectionnées.Add(Unité);
+                Unité.transform.GetChild(0).gameObject.SetActive(true);
+                Unité.GetComponent<Bouge>().enabled = true;
+            }
         }
     }
 
