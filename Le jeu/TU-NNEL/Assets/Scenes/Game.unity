@@ -11753,8 +11753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eef6a041a07b9a4ea53933d8e550a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Batiment: {fileID: 2006384364765319437, guid: 46ce40f576393b247bc76227317e2831, type: 3}
-  transparentBatiment: {fileID: 2155107464000449239, guid: 3ecdd0cfad99a2c42b768b5e13971f51, type: 3}
+  Batiment: {fileID: 2363464983034685807, guid: 63d9713aa986620419281d4852ee5cfb, type: 3}
+  transparentBatiment: {fileID: 2363464983034685807, guid: bce571270d962a74689f6217d312747e, type: 3}
   waitTime: 2
 --- !u!1 &1132232645
 GameObject:
@@ -13335,8 +13335,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eef6a041a07b9a4ea53933d8e550a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Batiment: {fileID: 8430485754381202114, guid: 741e47aeb1fb76c4e89d784a63a00538, type: 3}
-  transparentBatiment: {fileID: 8430485754381202114, guid: cb5936eb4105cfd408980fcb94d1f0bc, type: 3}
+  Batiment: {fileID: 8430485754381202114, guid: 9390c08a2935ef748a7830d61bdd4abe, type: 3}
+  transparentBatiment: {fileID: 8430485754381202114, guid: 63fce7f416f52b345b444bc9f649c2ba, type: 3}
   waitTime: 2
 --- !u!1 &1324958816
 GameObject:

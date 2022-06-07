@@ -139,14 +139,22 @@ public class Buildings : MonoBehaviourPun
     #region House
     public void buildTransparentHouse()
     {
+        Debug.Log($"fllor.coord.x {ChangeState.floorCoord.x}, z {ChangeState.floorCoord.z}");
         if(Ressources.pierre.Quant >= 5)
         {
             Ressources.pierre.suppRessource(5);
             Stone.update = false;
             position = new Vector3(ChangeState.floorCoord.x, 2.2f,ChangeState.floorCoord.z);
+            Debug.Log($"position.x {position.x} et z {position.z}");
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.Euler(new Vector3(Batiment.transform.eulerAngles.x, Batiment.transform.eulerAngles.y+90, Batiment.transform.eulerAngles.z+90)));
+            if((position.x + 1) % 3 == 0) position.x += 1;
+            else if((position.x - 1) % 3 == 0) position.x -= 1;
+            if((position.z + 1) % 3 == 0) position.z += 1;
+            else if((position.z - 1) % 3 == 0) position.z -= 1;
+            position.x -=0.5f;
+            go.transform.position = position;
             go.tag = "mine";
             view = PhotonView.Get(go);
             Debug.Log($"view : {view.ViewID}");
@@ -212,11 +220,17 @@ public class Buildings : MonoBehaviourPun
         {
             Ressources.pierre.suppRessource(5);
             Stone.update = false;
-            position = new Vector3(ChangeState.floorCoord.x, 0.2f,ChangeState.floorCoord.z);
+            position = new Vector3((int)ChangeState.floorCoord.x, 0.2f,(int)ChangeState.floorCoord.z);
+            Debug.Log($"position.x {position.x} et z {position.z}");
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
+            if((position.x + 1) % 3 == 0) position.x += 1;
+            else if((position.x - 1) % 3 == 0) position.x -= 1;
+            if((position.z + 1) % 3 == 0) position.z += 1;
+            else if((position.z - 1) % 3 == 0) position.z -= 1;
             go.tag = "mine";
+            go.transform.position = position;
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"House.coord {Batiment.transform.position}");
@@ -233,6 +247,7 @@ public class Buildings : MonoBehaviourPun
         view.RPC("deleteBat", RpcTarget.All);
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
+        go.transform.position = position;
         go.tag = "mine";
         Batiments.build("Mine");
     }
@@ -246,11 +261,16 @@ public class Buildings : MonoBehaviourPun
             Stone.update = false;
             Ressources.metal.suppRessource(5);
             Metal.update = false;
-            position = new Vector3(ChangeState.floorCoord.x, 0.2f,ChangeState.floorCoord.z);
+            position = new Vector3((int)ChangeState.floorCoord.x, 0.2f,(int)ChangeState.floorCoord.z);
             ChangeState.floor.tag = "notFree";
             Batiment.layer = 9;
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position, Quaternion.identity);
+            if((position.x + 1) % 3 == 0) position.x += 1;
+            else if((position.x - 1) % 3 == 0) position.x -= 1;
+            if((position.z + 1) % 3 == 0) position.z += 1;
+            else if((position.z - 1) % 3 == 0) position.z -= 1;
             go.tag = "mine";
+            go.transform.position = position;
             view = PhotonView.Get(go);
             ChangeState.builded = true;
             Debug.Log($"Labo.coord {Batiment.transform.position}");
@@ -274,6 +294,7 @@ public class Buildings : MonoBehaviourPun
         Batiment.layer = 9;
         GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
         go.tag = "mine";
+        
         Batiments.build("Labo");
         
     }
@@ -285,10 +306,16 @@ public class Buildings : MonoBehaviourPun
         {
             Ressources.pierre.suppRessource(10);
             Stone.update = false;
-            position = new Vector3(ChangeState.floorCoord.x, 1.1f,ChangeState.floorCoord.z);
+            position = new Vector3((int)ChangeState.floorCoord.x, 1.1f,(int)ChangeState.floorCoord.z);
             Batiment.layer = 9;
             ChangeState.floor.tag = "notFree";
             GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.identity);
+            if((position.x + 1) % 3 == 0) position.x += 1;
+            else if((position.x - 1) % 3 == 0) position.x -= 1;
+            if((position.z + 1) % 3 == 0) position.z += 1;
+            else if((position.z - 1) % 3 == 0) position.z -= 1;
+            position.z -=0.5f;
+            go.transform.position = position;
             go.tag = "mine";
             view = PhotonView.Get(go);
             Debug.Log($"viewId : {view.ViewID}");
