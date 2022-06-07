@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class Ciblage : MonoBehaviour
 {
+    List<GameObject> cibles = new List<GameObject>();
+    private void Update()
+    {
+        
+    }
     private void OnTriggerEnter(Collider SphereCollider)
     {
         if (SphereCollider.CompareTag("P1"))
         {
-            this.transform.GetComponent<Stats>().Cible = SphereCollider.gameObject;
+            cibles.Add(SphereCollider.gameObject);
         }
     }
     private void OnTriggerExit(Collider SphereCollider)
     {
         if (SphereCollider.CompareTag("P1"))
         {
-            this.transform.GetComponent<Stats>().Cible = null;
+            if (cibles.Contains(SphereCollider.gameObject))
+                cibles.Remove(SphereCollider.gameObject);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
-*<summary>Version améliorée du méca de base. Fait beaucoup de dégats, se déplace un peu plus vite mais a toujours besoin d'un humain.</summary>
+*<summary>Version amÃ©liorÃ©e du mÃ©ca de base. Fait beaucoup de dÃ©gats, se dÃ©place un peu plus vite mais a toujours besoin d'un humain.</summary>
 */
 public class SuperMecha : Unitees
 {
@@ -11,7 +11,7 @@ public class SuperMecha : Unitees
     private (uint, Ressources) fabrication = (1, Ressources.coeurEnergie);
     public Unitees Human => human;
     public (uint, Ressources) Fabrication => fabrication;
-    public SuperMecha() : base("Mecha", 10000, 0)
+    public SuperMecha() : base("Mecha", 10000, 0, 10)
     {
         if (human != null)
         {

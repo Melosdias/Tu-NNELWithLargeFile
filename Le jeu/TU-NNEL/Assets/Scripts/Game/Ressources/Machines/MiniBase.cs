@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
-*<summary>Sert à contrsuire une annexe de la base principale. Ne fait aucun dégats et assez facile à détruire.</summary>
+*<summary>Sert Ã  contrsuire une annexe de la base principale. Ne fait aucun dÃ©gats et assez facile Ã  dÃ©truire.</summary>
 */
 public class MiniBase : Unitees
 {
@@ -12,7 +12,9 @@ public class MiniBase : Unitees
     public (uint, Ressources) Fabrication => fabrication;
 
 
-    public MiniBase() : base("MiniBase", 100, 0)
+    public MiniBase() : base("MiniBase", 100, 0, 10)
     {
     }
 }
+
+

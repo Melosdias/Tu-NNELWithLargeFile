@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
-*<summary>Gros véhicule faisant plein de dégats et diffcile à détruire.
-Besoin de 5 humains à l'intérieur pour être fonctionnel et lent.</summary>
+*<summary>Gros vï¿½hicule faisant plein de dï¿½gats et diffcile ï¿½ dï¿½truire.
+Besoin de 5 humains ï¿½ l'intï¿½rieur pour ï¿½tre fonctionnel et lent.</summary>
 */
 public class Tank : Unitees
 {
@@ -15,7 +15,7 @@ public class Tank : Unitees
     public (uint, Ressources) Fabrication => fabrication;
 
 
-    public Tank() : base("Tank", 500, 0)
+    public Tank() : base("Tank", 500, 0, 10)
     {
         if (human.Count == 5)
         {

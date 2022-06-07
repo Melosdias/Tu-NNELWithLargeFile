@@ -104,7 +104,7 @@ public class ChangeState : MonoBehaviourPun
                     larbin = UnitSelection.Instance.mineurs.Dequeue();
                     if (larbin != null && larbin.GetComponent<Builder>() != null)
                     {
-                        larbin.GetComponent<Builder>().Work(hit);
+                        larbin.GetComponent<Builder>().Work(hit, intermediate, changing);
                         Debug.Log("fait");
                     }
                     else

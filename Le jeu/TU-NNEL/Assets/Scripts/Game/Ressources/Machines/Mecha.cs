@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
-*<summary>Gros robot qui fait beaucoup de dégats et a beauocup de vie. 
-Coute cher à fabriquer, se déplace très lentement et a besoin d'un humain pour attaquer et bouger.</summary>
+*<summary>Gros robot qui fait beaucoup de dÃ©gats et a beauocup de vie. 
+Coute cher Ã  fabriquer, se dÃ©place trÃ¨s lentement et a besoin d'un humain pour attaquer et bouger.</summary>
 */
 public class Mecha : Unitees
 {
@@ -12,7 +12,7 @@ public class Mecha : Unitees
     private (uint, Ressources) fabrication = (15, Ressources.metal);
     public Unitees Human => human;
     public (uint, Ressources) Fabrication => fabrication;
-    public Mecha() : base("Mecha", 500, 0)
+    public Mecha() : base("Mecha", 500, 0, 10)
     {
         if (human != null)
         {
