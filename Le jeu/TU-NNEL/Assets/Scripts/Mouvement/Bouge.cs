@@ -7,11 +7,13 @@ public class Bouge : MonoBehaviourPun
     NavMeshAgent sbire;
     public LayerMask ground;
     RaycastHit hit;
+    Animator m_Animator;
 
     void Start()
     {
         myCam = Camera.main;
         sbire = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponent<Animator>();
     }
 
     
@@ -34,7 +36,11 @@ public class Bouge : MonoBehaviourPun
     void moveSbire()
     {
         
-        if(sbire != null) sbire.SetDestination(hit.point);
+        if(sbire != null) 
+        {
+            sbire.SetDestination(hit.point);
+            m_Animator.SetBool("isWalking", true); 
+        }
     }
     [PunRPC]
     void stopSbire()
@@ -44,6 +50,7 @@ public class Bouge : MonoBehaviourPun
         {
             sbire.isStopped = true;
             sbire.ResetPath();
+            m_Animator.SetBool("isWalking", false);
         }
     }
 }

@@ -18,6 +18,7 @@ public class Builder : Unitees
     RaycastHit hit;
     public bool changing;
     public Material intermediate;
+    Animator an;
     public Builder(GameObject go) : base("Builder", 200, 0, 0)
     {
         this.go = go;
@@ -26,6 +27,7 @@ public class Builder : Unitees
     {
         UnitSelection.Instance.mineurs.Enqueue(this.gameObject);
         this.Health = 200;
+        an = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -38,6 +40,7 @@ public class Builder : Unitees
             if (Vector3.Distance(hit.point, this.gameObject.GetComponent<NavMeshAgent>().transform.position)<10)
             {
                 task = false;
+                an.SetBool("isWalking", false);
                 Break(hit, changing, intermediate);
                 Debug.Log("arrivé");
             }
@@ -49,6 +52,7 @@ public class Builder : Unitees
         {
             NavMeshAgent sbire = this.gameObject.GetComponent<NavMeshAgent>();
             sbire.SetDestination(h.point);
+            an.SetBool("isWalking", true);
             task = true;
             hit = h;
             changing = change;
