@@ -139,9 +139,9 @@ public class Builder : Unitees
 
         Debug.Log($"go.tag before {go.tag}");
         goView.RPC("changeMesh", RpcTarget.All);
-        go.tag = "Intermediate";
+        //go.tag = "Intermediate";
         Invoke("destroyWall", 5);
-        Debug.Log("destroyed techniquement");
+        //Debug.Log("destroyed techniquement");
         Debug.Log($"go.tag after {go.tag}");
     }
 

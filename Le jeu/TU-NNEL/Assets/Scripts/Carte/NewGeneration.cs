@@ -29,6 +29,7 @@ public class NewGeneration : MonoBehaviourPun
     [SerializeField]  private GameObject Base;
     [SerializeField] private GameObject Cube;
     [SerializeField] private GameObject GreatMine;
+    [SerializeField] private GameObject fow;
     
     
     
@@ -55,7 +56,7 @@ public class NewGeneration : MonoBehaviourPun
             map.Add((Bloc, a));
 
             a = "pierre";
-            GameObject go = (GameObject)Instantiate(Resources.Load(a), transform);
+            GameObject go = (GameObject)Instantiate(fow, transform);
             go.transform.position = new Vector3(3*i, 4f,3*j);
             go.layer = 6;
             sky[i,j] = go;
@@ -198,9 +199,9 @@ public class NewGeneration : MonoBehaviourPun
                     {
                         coordCube.Add((3*y, 1, 3*x));
                         if(!photonView.IsMine)  continue ;
-                        Cube.layer = 9;
-                        GameObject go = PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  
-                        Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));
+                        /*Cube.layer = 9;
+                        GameObject go = PhotonNetwork.Instantiate(Cube.name, new Vector3(3*y, 1.3f,3*x),  Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));*/
+                        photonView.RPC("instanciateCube", RpcTarget.AllBuffered, x, y);
                     }
 
                     if (type == "Mine")
@@ -247,5 +248,14 @@ public class NewGeneration : MonoBehaviourPun
             
         }
     }
-    
+    [PunRPC]
+    void instanciateCube(int x, int y)
+    {
+        GameObject theCube = Instantiate(Cube,new Vector3(3*y, 1.3f,3*x),  Quaternion.Euler(new Vector3(Cube.transform.eulerAngles.x, Cube.transform.eulerAngles.y+90, Cube.transform.eulerAngles.z+90)));
+        theCube.layer = 9;
+        theCube.AddComponent<PhotonView>();
+        PhotonView view = theCube.GetPhotonView();
+        PhotonNetwork.AllocateViewID(view);
+        
+    }
 }

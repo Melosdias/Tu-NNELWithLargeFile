@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 7035160419528822198}
   - component: {fileID: 7035160419528822199}
   - component: {fileID: 7035160419528822200}
+  - component: {fileID: 424533896242754065}
   m_Layer: 5
   m_Name: Choix 1
   m_TagString: Untagged
@@ -335,8 +336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e71fda3ec6cfb4fb091a81b924886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CubeIntact: {fileID: 4076095071396765696, guid: b423a3d3024cee64f82e0dfe1dc67147, type: 3}
-  CubeDestroyed: {fileID: 9102638231789756925, guid: 23e0dff1528fe8f4782aa8d6eca944a7, type: 3}
+  CubeIntact: {fileID: 6240639846399989631, guid: b423a3d3024cee64f82e0dfe1dc67147, type: 3}
+  CubeDestroyed: {fileID: 3573699789890683800, guid: beaf833b6a46be449b78db20d96b1f57, type: 3}
   CanvasEvent: {fileID: 7035160420577338918}
   respierre: 5
   resmetal: 15
@@ -427,6 +428,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &424533896242754065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035160419528822202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7035160419551335628
 GameObject:
   m_ObjectHideFlags: 0

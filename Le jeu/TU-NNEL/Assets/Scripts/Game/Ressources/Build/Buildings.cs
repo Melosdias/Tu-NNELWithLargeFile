@@ -9,6 +9,7 @@ public class Buildings : MonoBehaviourPun
 {
     [SerializeField] private GameObject Batiment;
     [SerializeField] private GameObject transparentBatiment;
+    private GameObject transparent;
     private PhotonView view;
     private Vector3 position;
     private Quaternion quaternion;
@@ -309,15 +310,9 @@ public class Buildings : MonoBehaviourPun
             position = new Vector3((int)ChangeState.floorCoord.x, 1.1f,(int)ChangeState.floorCoord.z);
             Batiment.layer = 9;
             ChangeState.floor.tag = "notFree";
-            GameObject go = PhotonNetwork.Instantiate(transparentBatiment.name, position , Quaternion.identity);
-            if((position.x + 1) % 3 == 0) position.x += 1;
-            else if((position.x - 1) % 3 == 0) position.x -= 1;
-            if((position.z + 1) % 3 == 0) position.z += 1;
-            else if((position.z - 1) % 3 == 0) position.z -= 1;
-            position.z -=0.5f;
-            go.transform.position = position;
-            go.tag = "mine";
-            view = PhotonView.Get(go);
+            
+            this.photonView.RPC("buildBatTransparent", RpcTarget.AllBuffered);
+            //view = PhotonView.Get(go);
             Debug.Log($"viewId : {view.ViewID}");
             ChangeState.builded = true;
             Debug.Log($"Barracks.coord {Batiment.transform.position}");
@@ -332,12 +327,8 @@ public class Buildings : MonoBehaviourPun
     {
         
         view.RPC("deleteBat", RpcTarget.All);
-        Batiment.layer = 9;
-        GameObject go = PhotonNetwork.Instantiate(Batiment.name, position, Quaternion.identity);
-        go.tag = "mine";
+        this.photonView.RPC("buildBatNormal", RpcTarget.All);
         Batiments.build("Barracks");
-        
-        
     }
     #endregion
     #region RobotBay
@@ -383,11 +374,36 @@ public class Buildings : MonoBehaviourPun
     #endregion
     #region PunRPC
     [PunRPC]
+    protected virtual void buildBatTransparent()
+    {
+        GameObject go = Instantiate(transparentBatiment, position , Quaternion.identity);
+        if((position.x + 1) % 3 == 0) position.x += 1;
+        else if((position.x - 1) % 3 == 0) position.x -= 1;
+        if((position.z + 1) % 3 == 0) position.z += 1;
+        else if((position.z - 1) % 3 == 0) position.z -= 1;
+        position.z -=0.5f;
+        go.transform.position = position;
+        go.tag = "mine";
+        go.AddComponent<PhotonView>();
+        PhotonNetwork.AllocateViewID(go.GetPhotonView());
+        view = go.GetPhotonView();
+    }
+    [PunRPC]
     void deleteBat()
     {
         Debug.Log("deleteBat");
         Destroy(transparentBatiment);
         //transparentBatiment.SetActive(false);
+    }
+    [PunRPC]
+    void buildBatNormal()
+    {
+        Batiment.layer = 9;
+        GameObject go = Instantiate(Batiment, position, Quaternion.identity);
+        go.tag = "mine";
+        go.AddComponent<PhotonView>();
+        PhotonNetwork.AllocateViewID(go.GetPhotonView());
+        view = go.GetPhotonView();
     }
     #endregion
 }
